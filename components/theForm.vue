@@ -221,7 +221,8 @@
                     <h2 class="mb-5 text-center">What is your address?</h2>
                     <v-row>
                         <v-col cols="8">
-                            <input type="text" ref="postcodeField" class="addressLookup" placeholder="Please type your postcode" @change="requestAddress(key)">
+                            <input type="text" v-model="searchPostcode" ref="postcodeField" class="addressLookup" placeholder="Please type your postcode" @change="requestAddress(key)">
+                        {{searchPostcode.replace(/\s/g,'')}}
                         </v-col>
                         <v-col cols="4">
                             <v-btn @click="requestAddress(key)" color="primary" x-large block>Find</v-btn>
@@ -305,12 +306,13 @@ export default {
                 phone: null,
                 success: false,
             },
+            searchPostcode: '',
             contactTicked: true,
             popUp: false,
             titles: ['Mr', 'Mrs', 'Miss', 'Ms'],
             addressList: [],
             sCount: 0,
-            stepInner: 0, // must start at 0
+            stepInner: 4, // must start at 0
             section: 1, // must start at 1
             current: 0,
             numberOfsections: 0,
@@ -365,7 +367,7 @@ export default {
             this.questions = Object.fromEntries(newArr)
         },
         requestAddress(qKey) {
-            this.$axios.$post('https://api.ideal-postcodes.co.uk/v1/postcodes/' + this.$refs.postcodeField[0]['value'] + '?api_key=ak_jr1wo74l0sgSldKnJeTPAEo5QpHxw', {})
+            this.$axios.$post('https://api.ideal-postcodes.co.uk/v1/postcodes/' + this.searchPostcode.replace(/\s/g,'') + '?api_key=ak_jr1wo74l0sgSldKnJeTPAEo5QpHxw')
                 .then((response) => {
                     console.log(response.data.result);
                     this.popUp = true
@@ -405,6 +407,7 @@ export default {
 
     },
     computed: {
+
         percentageDone() {
             var countAllQuestions = Object.keys(this.questions).length;
             var countAllValues = [];
