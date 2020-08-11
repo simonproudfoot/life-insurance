@@ -1,7 +1,7 @@
 <template>
     <div id="theForm" class="theForm">
       <v-progress-linear v-model="percentageDone"  color="orange accent-4"></v-progress-linear>
-        <v-btn @click="postLead"></v-btn>
+        
         <div v-for="(question, key, index) in questions" :key="key">
           
             <transition name="fade">
