@@ -471,7 +471,7 @@ export default {
     box-shadow: 0 1px 7px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .37);
     max-width: 600px;
     @media only screen and (max-width: 600px) {
-        margin: -100px auto 0 auto;
+        margin: -40px auto 0 auto;
         width: 95%;
     }
     @media only screen and (min-width: 600px) {
