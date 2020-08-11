@@ -1,7 +1,9 @@
 <template>
     <div id="theForm" class="theForm">
       <v-progress-linear v-model="percentageDone"  color="orange accent-4"></v-progress-linear>
+        <v-btn @click="postLead"></v-btn>
         <div v-for="(question, key, index) in questions" :key="key">
+          
             <transition name="fade">
                 <v-form v-on:submit.prevent v-model="isValid" v-if="key == 'id_like_quotes_for' && stepInner == index">
                     <div class="formSectionInner">
@@ -286,12 +288,7 @@
                         would like to use email, text and display notifications to let you know about <b>lifecoverquoter.co.uk</b> products and services. If you do not want to receive these, un-tick this box.
                         <v-tooltip bottom>
                             <template v-slot:activator="{ on }">
-                            <a
-                                target="_blank"
-                                href="http://vuetifyjs.com"
-                                @click.stop
-                                v-on="on"
-                            >
+                            <a target="_blank"  href="http://vuetifyjs.com" @click.stop v-on="on" >
                               
                             </a>
                             </template>
@@ -423,6 +420,39 @@ export default {
                     });
             }
         },
+        postLead(){
+            const headers = {
+                crossdomain: true, 
+                'Access-Control-Allow-Origin' : '*',
+                key: "07b21931f102e98ba038a6b70e7dcc77"
+            }
+            const data = {
+            "lead": {
+                    "campid": "MY-CAMPAIGN",
+                    "sid": "SID1",
+                    "email": "leadbyte@aol.com",
+                    "title": "Mr",
+                    "firstname": "David",
+                    "lastname": "Beckham",
+                    "building": "41",
+                    "street1": "Hope Street",
+                    "street2": "Red Hill House",
+                    "towncity": "Farndon",
+                    "county": "Cheshire",
+                    "postcode": "CH4 8PH",
+                    "phone1": "07879000191",
+                    "phone2": "07879000192",
+                    "phone3": "07879000193"
+                }
+            }
+
+             this.$axios.$post('https://mediamaze.leadbyte.co.uk/restapi/v1.2/leads', headers, data).then((response) => {
+                console.log(response); 
+            }).catch(function(error) {
+                console.log(error);
+            });
+            // https://mediamaze.leadbyte.co.uk/restapi/v1.2/leads
+        }
 
     },
     computed: {
