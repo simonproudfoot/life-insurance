@@ -420,15 +420,12 @@ export default {
                     });
             }
         },
+        encodeDataToURL(data) {
+            return Object.keys(data).map(value => `${value}=${encodeURIComponent(data[value])}`).join('&');
+        },
         postLead(){
-            const headers = {
-                crossdomain: true, 
-                'Access-Control-Allow-Origin' : '*',
-                key: "07b21931f102e98ba038a6b70e7dcc77"
-            }
             const data = {
-            "lead": {
-                    "campid": "MY-CAMPAIGN",
+                    "campid": "MOTORLY",
                     "sid": "SID1",
                     "email": "leadbyte@aol.com",
                     "title": "Mr",
@@ -443,20 +440,17 @@ export default {
                     "phone1": "07879000191",
                     "phone2": "07879000192",
                     "phone3": "07879000193"
-                }
             }
-
-             this.$axios.$post('https://mediamaze.leadbyte.co.uk/restapi/v1.2/leads', headers, data).then((response) => {
+            console.log(this.encodeDataToURL(data).toString().replace(/[^\x20-\x7E]/g, ''))
+            this.$axios.$post('https://my-rejected-ppi.co.uk/sub.php?lead='+this.encodeDataToURL(data).toString().replace(/[^\x20-\x7E]/g, '')
+            ).then((response) => {
                 console.log(response); 
             }).catch(function(error) {
                 console.log(error);
             });
-            // https://mediamaze.leadbyte.co.uk/restapi/v1.2/leads
         }
-
     },
     computed: {
-
         percentageDone() {
             var countAllQuestions = Object.keys(this.questions).length;
             var countAllValues = [];
