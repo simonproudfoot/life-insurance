@@ -1,5 +1,6 @@
 <template>
     <div class="theForm">
+      <v-progress-linear v-model="percentageDone"  color="orange accent-4"></v-progress-linear>
         <div v-for="(question, key, index) in questions" :key="key">
             <transition name="fade">
                 <v-form v-on:submit.prevent v-model="isValid" v-if="key == 'id_like_quotes_for' && stepInner == index">
@@ -34,14 +35,13 @@
                         <h2 class="mb-5 text-center">Have you smoked in the last 12 months?</h2>
                         <v-row>
                             <v-col>
-                                <v-btn x-large block outlined @click="stepInner++, questions[key] = 'yes'">
+                                <v-btn x-large block outlined @click="stepInner++, questions[key] = 'yes', toTop()">
                                     <v-icon>mdi-check-circle-outline</v-icon>
                                     <h2>Yes</h2>
-
                                 </v-btn>
                             </v-col>
                             <v-col>
-                                <v-btn outlined x-large block @click="stepInner++, questions[key] = 'no'">
+                                <v-btn outlined x-large block @click="stepInner++, questions[key] = 'no', toTop()">
                                     <v-icon>mdi-close-circle-outline</v-icon>
                                     <h2>No</h2>
                                 </v-btn>
@@ -57,13 +57,13 @@
                         <h2 class="mb-5 text-center">Has your partner smoked in the last 12 months?</h2>
                         <v-row>
                             <v-col>
-                                <v-btn x-large block outlined @click="stepInner++, questions[key] = 'yes'">
+                                <v-btn x-large block outlined @click="stepInner++, questions[key] = 'yes', toTop()">
                                     <v-icon>mdi-check-circle-outline</v-icon>
                                     <h2>Yes</h2>
                                 </v-btn>
                             </v-col>
                             <v-col>
-                                <v-btn outlined x-large block @click="stepInner++, questions[key] = 'no'">
+                                <v-btn outlined x-large block @click="stepInner++, questions[key] = 'no', toTop()">
                                     <v-icon>mdi-close-circle-outline</v-icon>
                                     <h2>No</h2>
                                 </v-btn>
@@ -79,13 +79,13 @@
                         <h2 class="mb-5 text-center">Are you</h2>
                         <v-row>
                             <v-col>
-                                <v-btn x-large block outlined @click="stepInner++, questions[key] = 'male'">
+                                <v-btn x-large block outlined @click="stepInner++, questions[key] = 'male', toTop()">
                                     <v-icon>mdi-human-male</v-icon>
                                     <h2>Male</h2>
                                 </v-btn>
                             </v-col>
                             <v-col>
-                                <v-btn outlined x-large block @click="stepInner++, questions[key] = 'female'">
+                                <v-btn outlined x-large block @click="stepInner++, questions[key] = 'female', toTop()">
                                     <v-icon>mdi-human-female</v-icon>
                                     <h2>Female</h2>
                                 </v-btn>
@@ -101,13 +101,13 @@
                         <h2 class="mb-5 text-center">What is you partners gender?</h2>
                         <v-row>
                             <v-col>
-                                <v-btn x-large block outlined @click="stepInner++, questions[key] = 'male'">
+                                <v-btn x-large block outlined @click="stepInner++, questions[key] = 'male', toTop()">
                                     <v-icon>mdi-human-male</v-icon>
                                     <h2>Male</h2>
                                 </v-btn>
                             </v-col>
                             <v-col>
-                                <v-btn outlined x-large block @click="stepInner++, questions[key] = 'female'">
+                                <v-btn outlined x-large block @click="stepInner++, questions[key] = 'female', toTop()">
                                     <v-icon>mdi-human-female</v-icon>
                                     <h2>Female</h2>
                                 </v-btn>
@@ -143,7 +143,7 @@
                                 <v-select label="Year" single-line v-model="questions[key][2]" :rules="[validationRules.required]" :items="listYears"></v-select>
                             </v-col>
                         </v-row>
-                        <v-btn :disabled="!isValid" x-large block class="btn-ntx" @click="stepInner++">Next</v-btn>
+                        <v-btn :disabled="!isValid" x-large block class="btn-ntx" @click="stepInner++, toTop()">Next</v-btn>
                     </div>
                 </v-form>
             </transition>
@@ -174,7 +174,7 @@
                                 <v-select label="Year" outlined v-model="questions[key][2]" :rules="[validationRules.required]" :items="listYears"></v-select>
                             </v-col>
                         </v-row>
-                        <v-btn :disabled="!isValid" x-large block class="btn-ntx" @click="stepInner++">Next</v-btn>
+                        <v-btn :disabled="!isValid" x-large block class="btn-ntx" @click="stepInner++, toTop()">Next</v-btn>
                     </div>
                 </v-form>
             </transition>
@@ -182,15 +182,14 @@
             <transition name="fade">
                 <v-form v-on:submit.prevent v-model="isValid" v-if="key == 'name' && stepInner == index">
                     <div class="formSectionInner formSectionInner--narrow  ">
-
                         <h2 class="mb-5 text-center">Your name</h2>
                         <v-radio-group v-model="questions[key][2]" row class="justify-space-between" :rules="[validationRules.required]">
                             <template v-for="(title, i ) in titles"><v-radio :label="title" :value="title" :key="i"></v-radio>
-</template>
+                        </template>
                         </v-radio-group>
                         <v-text-field   single-line label="First name" :rules="[validationRules.required]" v-model="questions[key][0]"></v-text-field>
                         <v-text-field  single-line label="Surname" :rules="[validationRules.required]" v-model="questions[key][1]"></v-text-field>
-                         <v-btn :disabled="!isValid" x-large block class="btn-ntx" @click="stepInner++">Next</v-btn>
+                         <v-btn :disabled="!isValid" x-large block class="btn-ntx" @click="stepInner++, toTop()">Next</v-btn>
                     </div>
                 </v-form>
             </transition>
@@ -200,7 +199,7 @@
                     <div class="formSectionInner formSectionInner--narrow">
                         <h2 class="mb-5 text-center">Email address</h2>
                         <v-text-field type="email"   single-line label="Email" :rules="validationRules.email" v-model="questions[key]"></v-text-field>
-                         <v-btn :disabled="!isValid" x-large block class="btn-ntx" @click="stepInner++">Next</v-btn>
+                         <v-btn :disabled="!isValid" x-large block class="btn-ntx" @click="stepInner++, toTop()">Next</v-btn>
                     </div>
                 </v-form>
             </transition>
@@ -211,14 +210,13 @@
                         <h2 class="mb-5 text-center">Contact number</h2>
                         <v-text-field  :hint="telSearching ? 'Verifying telephone number' : null" :append-icon="telSearching ? 'mdi-loading' : 'mdi-loadingf'"  ref="telephoneField" type="tel"  single-line label="Telephone number" v-model="questions[key]" @keyup="phoneValidate"></v-text-field>
                         <p v-if="phoneValidated == false">Invalid UK telephone number</p>
-                        <v-btn :disabled="!isValid" x-large block class="btn-ntx" @click="stepInner++">Next</v-btn>
+                        <v-btn :disabled="!isValid" x-large block class="btn-ntx" @click="stepInner++, toTop()">Next</v-btn>
                     </div>
-
                 </v-form>
             </transition>
             <!-- Address  -->
             <transition name="fade">
-            <v-form v-on:submit.prevent transition="fade-transition" v-if="key == 'address' && stepInner == index"  :rule="questions[key].length !== 0 ? isValid = true: isValid = true" >
+            <v-form v-on:submit.prevent transition="fade-transition" v-if="key == 'address' && stepInner == index"  :rule="questions[key].length !== 0 ? isValid = true: isValid = false" >
                 <div class="formSectionInner">
                     <h2 class="mb-5 text-center">What is your address?</h2>
                     <v-row>
@@ -246,28 +244,27 @@
                             <v-divider></v-divider>
                         </v-card>
                     </v-dialog>
-<template v-if="questions[key]">
-    <v-row class="addressDeets">
-        <v-col cols="12" class="pb-0">
-            <v-text-field type="text" v-model="questions[key].line_1" single-line label="Address line 1" />
-        </v-col>
-        <v-col cols="12" class="pb-0">
-            <v-text-field type="text" v-model="questions[key].line_2" single-line label="Address line 2" />
-        </v-col>
-        <v-col cols="12" class="pb-0">
-            <v-text-field type="text" v-model="questions[key].line_3" d single-line label="Address line 3" />
-        </v-col>
-        <v-col cols="6" class="pb-0">
-            <v-text-field type="text" v-model="questions[key].post_town" d single-line label="Town/city" />
-        </v-col>
-        <v-col cols="6" class="pb-0">
-            <v-text-field type="text" v-model="questions[key].postcode" single-line label="Postcode" />
-        </v-col>
-    </v-row>
-</template>
-                     <v-btn :disabled="!isValid" x-large block class="btn-ntx" @click="stepInner++">Next</v-btn>
+                    <template v-if="questions[key]">
+                        <v-row class="addressDeets">
+                            <v-col cols="12" class="pb-0">
+                                <v-text-field type="text" v-model="questions[key].line_1" single-line label="Address line 1" />
+                            </v-col>
+                            <v-col cols="12" class="pb-0">
+                                <v-text-field type="text" v-model="questions[key].line_2" single-line label="Address line 2" />
+                            </v-col>
+                            <v-col cols="12" class="pb-0">
+                                <v-text-field type="text" v-model="questions[key].line_3" d single-line label="Address line 3" />
+                            </v-col>
+                            <v-col cols="6" class="pb-0">
+                                <v-text-field type="text" v-model="questions[key].post_town" d single-line label="Town/city" />
+                            </v-col>
+                            <v-col cols="6" class="pb-0">
+                                <v-text-field type="text" v-model="questions[key].postcode" single-line label="Postcode" />
+                            </v-col>
+                        </v-row>
+                    </template>
+                    <v-btn :disabled="!isValid" x-large block class="btn-ntx" @click="stepInner++, toTop()">Next</v-btn>
                 </div>
-
             </v-form>
             </transition>
             <transition name="fade">
@@ -278,30 +275,19 @@
                         <li>{{error}}</li>
                     </ul>
                 </v-alert>
-
-                <v-btn large accent class="submitButton py-3" style="margin: 3em 0" x-large color="success" @click="postForm" :loading="sending" >
-
-                    <v-row no-gutters>
-                        <v-col cols="12 text-center pb-0">
-                            <p class="display-1 mt-1 btn-ntx" >Get my Free Quote
-                                <v-icon class="mb-0" large>mdi-chevron-double-right</v-icon>
-                            </p>
-                        </v-col>
-                        <v-col cols="12" class="text-center pt-0 pb-3" style="letter-spacing: 0" :style="$vuetify.breakpoint.xs ? 'fontSize:12px': 'fontSize:inherit'">
-                            No impact on your credit score
-                        </v-col>
-                    </v-row>
+                <v-btn large accent class="submitButton py-3" x-large color="success" @click="postForm" :loading="sending" >
+                  Get my Free Quote
+                  <v-icon class="mb-0" large>mdi-chevron-double-right</v-icon>
                 </v-btn>
                 <p>We would like to use email, text and display notifications to let you know about <b>lifecoverquoter.co.uk</b> products and services. If you do not want to receive these, un-tick this box.
                 <v-checkbox outlined v-model="contactTicked" class="d-inline selectItems" style="width: 10px; margin-left:10px; vertical-align: sub;"></v-checkbox>
                 </p>
             </div>
         </transition>
-            </div>
-            <v-btn v-if="stepInner !== 0" text @click="stepInner--" block=""><v-icon>mdi-menu-left-outline</v-icon>Back</v-btn>
+        </div>
+        <v-btn v-if="stepInner !== 0" text @click="stepInner--, toTop()" block=""><v-icon>mdi-menu-left-outline</v-icon>Back</v-btn>
     </div>
 </template>
-
 <script>
 import Vue from 'vue';
 export default {
@@ -389,10 +375,13 @@ export default {
                     console.log(error);
                 });
         },
+        toTop () {
+          this.$vuetify.goTo(0)
+        },
         phoneValidate() {
             if (this.$refs.telephoneField[0]['value'].length > 10) {
                 this.telSearching = true
-                this.axios.post('https://webservices.data-8.co.uk/TelephoneLineValidation/IsValidAdvanced.json?key=GQ4F-VQJR-BEBA-B9RV', {
+                this.axios.post('https://webservices.data-8.co.uk/TelephoneLineValidation/IsValidAdvanced.json?key=CX3N-IDXM-XEFB-73WE', {
                         "number": this.$refs.telephoneField[0]['value'],
                         "options": {
                             "UseMobileValidation": true
@@ -413,8 +402,20 @@ export default {
                     });
             }
         },
+
     },
     computed: {
+        percentageDone() {
+            var countAllQuestions = Object.keys(this.questions).length;
+            var countAllValues = [];
+              Object.values(this.questions).filter((y) => y == "" || y == 0 || y == [] || y == null)
+                .forEach((q) => {
+                  countAllValues.push(q);
+                });
+            var x = countAllValues.length / countAllQuestions;
+            var percenage = x * 100;
+            return 100 - percenage + "%";
+        },
         listMonths() {
             var number = 1;
             var months = []
@@ -454,19 +455,16 @@ export default {
     },
 }
 </script>
-
 <style scoped lang="scss">
 .btn-ntx {
     color: #fff;
     font-family: $heading-font-family;
     background-color: #ffa000 !important;
 }
-
 .v-btn .v-icon {
     margin-right: 10px;
     color: #1976d2;
 }
-
 .theForm {
     background-color: #fff;
     border-radius: 8px;
@@ -480,38 +478,31 @@ export default {
         margin: -150px auto 0 auto;
     }
 }
-
 .fade-enter-active,
 .v-stepper__content {
     transition: all .3s ease-in-out !important;
 }
-
 .v-stepper {
     box-shadow: none !important;
     box-shadow: 0 !important;
 }
-
 .fade-enter-active,
 .fade-leave-active,
 .v-stepper__content {
     opacity: 1;
     transform: translateY(0)
 }
-
 .fade-enter {
     transition-delay: 3s
 }
-
 .fade-enter,
 .fade-leave-to {
     opacity: 0;
     transform: translateY(10px)
 }
-
 .formSectionInner {
     padding: 2em;
 }
-
 .addressLookup {
     background-color: #fff;
     padding: 0.5rem 1rem;
@@ -532,29 +523,24 @@ export default {
     padding: 13px 10px;
     box-shadow: 0 2px 3px #00000014;
 }
-
 .addressDeets {
     .v-text-field__details {
         display: none !important;
     }
 }
-
 .addressField-0 {
     width: 40%;
     display: inline-block;
 }
-
 .addressField-1 {
     width: 100%;
     display: inline-block;
 }
-
 .addressField-2 {
     width: 60%;
     display: inline-block;
     padding-right: 12px;
 }
-
 .addressField-3 {
     width: 40%;
     display: inline-block;
