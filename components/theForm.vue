@@ -1,5 +1,5 @@
 <template>
-    <div class="theForm">
+    <div id="theForm" class="theForm">
       <v-progress-linear v-model="percentageDone"  color="orange accent-4"></v-progress-linear>
         <div v-for="(question, key, index) in questions" :key="key">
             <transition name="fade">
@@ -193,7 +193,7 @@
                     </div>
                 </v-form>
             </transition>
-          <!-- Email -->
+            <!-- Email -->
             <transition name="fade">
                 <v-form v-on:submit.prevent v-if="key == 'email' && stepInner == index" ref="form" v-model="isValid">
                     <div class="formSectionInner formSectionInner--narrow">
@@ -222,7 +222,7 @@
                     <v-row>
                         <v-col cols="8">
                             <input type="text" v-model="searchPostcode" ref="postcodeField" class="addressLookup" placeholder="Please type your postcode" @change="requestAddress(key)">
-                        {{searchPostcode.replace(/\s/g,'')}}
+                            {{searchPostcode.replace(/\s/g,'')}}
                         </v-col>
                         <v-col cols="4">
                             <v-btn @click="requestAddress(key)" color="primary" x-large block>Find</v-btn>
@@ -276,13 +276,33 @@
                         <li>{{error}}</li>
                     </ul>
                 </v-alert>
-                <v-btn large accent class="submitButton py-3" x-large color="success" @click="postForm" :loading="sending" >
-                  Get my Free Quote
-                  <v-icon class="mb-0" large>mdi-chevron-double-right</v-icon>
+                <v-btn accent class="submitButton py-3" x-large block color="success" @click="postForm" :loading="sending" >Get my Free Quote
+                  <v-icon lass="mb-0 text-white" large>mdi-chevron-double-right</v-icon>
                 </v-btn>
-                <p>We would like to use email, text and display notifications to let you know about <b>lifecoverquoter.co.uk</b> products and services. If you do not want to receive these, un-tick this box.
-                <v-checkbox outlined v-model="contactTicked" class="d-inline selectItems" style="width: 10px; margin-left:10px; vertical-align: sub;"></v-checkbox>
-                </p>
+
+                <v-checkbox v-model="contactTicked">
+                    <template v-slot:label>
+                        <div>
+                        would like to use email, text and display notifications to let you know about <b>lifecoverquoter.co.uk</b> products and services. If you do not want to receive these, un-tick this box.
+                        <v-tooltip bottom>
+                            <template v-slot:activator="{ on }">
+                            <a
+                                target="_blank"
+                                href="http://vuetifyjs.com"
+                                @click.stop
+                                v-on="on"
+                            >
+                              
+                            </a>
+                            </template>
+                        </v-tooltip>
+                    
+                        </div>
+                    </template>
+                </v-checkbox>
+
+
+               
             </div>
         </transition>
         </div>
@@ -312,8 +332,7 @@ export default {
             titles: ['Mr', 'Mrs', 'Miss', 'Ms'],
             addressList: [],
             sCount: 0,
-            stepInner: 4, // must start at 0
-            section: 1, // must start at 1
+            stepInner: 0, // must start at 0
             current: 0,
             numberOfsections: 0,
             isValid: false,
@@ -365,25 +384,25 @@ export default {
             // add new items to array
             newArr.splice(o, 0, [k, v]);
             this.questions = Object.fromEntries(newArr)
-        },
+        },      
         requestAddress(qKey) {
-            this.$axios.$post('https://api.ideal-postcodes.co.uk/v1/postcodes/' + this.searchPostcode.replace(/\s/g,'') + '?api_key=ak_jr1wo74l0sgSldKnJeTPAEo5QpHxw')
+            this.$axios.$get('https://api.ideal-postcodes.co.uk/v1/postcodes/' + this.searchPostcode.replace(/\s/g,'') + '?api_key=ak_jr1wo74l0sgSldKnJeTPAEo5QpHxw')
                 .then((response) => {
-                    console.log(response.data.result);
+                    console.log(response.result);
                     this.popUp = true
-                    this.addressList = response.data.result
+                    this.addressList = response.result
                 })
                 .catch(function(error) {
                     console.log(error);
                 });
         },
         toTop () {
-          this.$vuetify.goTo(0)
+          this.$vuetify.goTo('#theForm')
         },
         phoneValidate() {
             if (this.$refs.telephoneField[0]['value'].length > 10) {
                 this.telSearching = true
-                this.axios.post('https://webservices.data-8.co.uk/TelephoneLineValidation/IsValidAdvanced.json?key=CX3N-IDXM-XEFB-73WE', {
+                this.$axios.$get('https://webservices.data-8.co.uk/TelephoneLineValidation/IsValidAdvanced.json?key=CX3N-IDXM-XEFB-73WE', {
                         "number": this.$refs.telephoneField[0]['value'],
                         "options": {
                             "UseMobileValidation": true

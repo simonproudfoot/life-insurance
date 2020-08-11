@@ -39,6 +39,8 @@ export default {
   */
   plugins: [
   ],
+
+  
   /*
   ** Auto import components
   ** See https://nuxtjs.org/api/configuration-components
