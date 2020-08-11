@@ -21,9 +21,9 @@
                         </v-row>
                     </div>
                     <v-row class="trustLogos" align="center">
-                        <v-col class="text-center mb-3 col"><img class="ml-auto mr-auto" src="/reviews-trust-logo.png" width="65"></v-col>
-                        <v-col class="text-center mb-3 col"><img class="ml-auto mr-auto" src="/comodo.png" width="65"></v-col>
-                        <v-col class="text-center mb-3 col"><img class="ml-auto mr-auto" src="/ico.png" width="65"></v-col>
+                        <v-col class="text-center mb-3 col"><v-img class="ml-auto mr-auto" src="/reviews-trust-logo.png" width="65"/></v-col>
+                        <v-col class="text-center mb-3 col"><v-img class="ml-auto mr-auto" src="/comodo.png" width="65"/></v-col>
+                        <v-col class="text-center mb-3 col"><v-img class="ml-auto mr-auto" src="/ico.png" width="65"/></v-col>
                     </v-row>
                 </v-form>
             </transition>

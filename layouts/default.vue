@@ -1,8 +1,7 @@
 <template>
     <v-app>
         <v-app-bar absolute elevation="0" app class="text-center">
-
-             <nuxt-link style="margin: auto; cursor: pointer" class="pt-2" tag="img" :src="'/logo.png'" to="/" width="140">
+            <nuxt-link style="margin: auto; cursor: pointer" class="pt-2" tag="img" :src="'/logo.png'" to="/" width="140">
             </nuxt-link>
         </v-app-bar>
         <v-main>
