@@ -1,9 +1,7 @@
 <template>
     <div id="theForm" class="theForm">
       <v-progress-linear v-model="percentageDone"  color="orange accent-4"></v-progress-linear>
-        
         <div v-for="(question, key, index) in questions" :key="key">
-          
             <transition name="fade">
                 <v-form v-on:submit.prevent v-model="isValid" v-if="key == 'id_like_quotes_for' && stepInner == index">
                     <div class="formSectionInner">
@@ -207,7 +205,7 @@
             </transition>
             <!-- Tel -->
             <transition name="fade">
-                <v-form v-on:submit.prevent v-if="key == 'phone' && stepInner == index" ref="form" v-model="isValid" :rules="phoneValidated ? isValid = true : isValid=true">
+                <v-form v-on:submit.prevent v-if="key == 'phone' && stepInner == index" ref="form" v-model="isValid" :rules="phoneValidated ? isValid = true : isValid=false">
                     <div class="formSectionInner formSectionInner--narrow telephone">
                         <h2 class="mb-5 text-center">Contact number</h2>
                         <v-text-field  :hint="telSearching ? 'Verifying telephone number' : null" :append-icon="telSearching ? 'mdi-loading' : 'mdi-loadingf'"  ref="telephoneField" type="tel"  single-line label="Telephone number" v-model="questions[key]" @keyup="phoneValidate"></v-text-field>
@@ -224,7 +222,6 @@
                     <v-row>
                         <v-col cols="8">
                             <input type="text" v-model="searchPostcode" ref="postcodeField" class="addressLookup" placeholder="Please type your postcode" @change="requestAddress(key)">
-                            {{searchPostcode.replace(/\s/g,'')}}
                         </v-col>
                         <v-col cols="4">
                             <v-btn @click="requestAddress(key)" color="primary" x-large block>Find</v-btn>
@@ -281,7 +278,6 @@
                 <v-btn accent class="submitButton py-3" x-large block color="success" @click="postForm" :loading="sending" >Get my Free Quote
                   <v-icon lass="mb-0 text-white" large>mdi-chevron-double-right</v-icon>
                 </v-btn>
-
                 <v-checkbox v-model="contactTicked">
                     <template v-slot:label>
                         <div>
@@ -289,17 +285,12 @@
                         <v-tooltip bottom>
                             <template v-slot:activator="{ on }">
                             <a target="_blank"  href="http://vuetifyjs.com" @click.stop v-on="on" >
-                              
                             </a>
                             </template>
                         </v-tooltip>
-                    
                         </div>
                     </template>
                 </v-checkbox>
-
-
-               
             </div>
         </transition>
         </div>
@@ -381,7 +372,7 @@ export default {
             // add new items to array
             newArr.splice(o, 0, [k, v]);
             this.questions = Object.fromEntries(newArr)
-        },      
+        },
         requestAddress(qKey) {
             this.$axios.$get('https://api.ideal-postcodes.co.uk/v1/postcodes/' + this.searchPostcode.replace(/\s/g,'') + '?api_key=ak_jr1wo74l0sgSldKnJeTPAEo5QpHxw')
                 .then((response) => {
@@ -444,7 +435,7 @@ export default {
             console.log(this.encodeDataToURL(data).toString().replace(/[^\x20-\x7E]/g, ''))
             this.$axios.$post('https://my-rejected-ppi.co.uk/sub.php?lead='+this.encodeDataToURL(data).toString().replace(/[^\x20-\x7E]/g, '')
             ).then((response) => {
-                console.log(response); 
+                console.log(response);
             }).catch(function(error) {
                 console.log(error);
             });
