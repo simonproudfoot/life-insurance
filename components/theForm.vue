@@ -118,31 +118,33 @@
             </transition>
             <!-- DOB -->
             <transition name="fade">
-                <v-form v-on:submit.prevent v-if="key == 'dob' && stepInner == index" ref="form" v-model="isValid">
+                <v-form v-on:submit.prevent v-if="key == 'dob' && stepInner == index" ref="form" v-model="isValid" :rules="ageCheck ? isValid = true : isValid = false">
                     <div class="formSectionInner">
                         <h2 class="mb-5 text-center">Date of birth</h2>
+                        {{prePopDob}}
                         <v-row v-if="!$vuetify.breakpoint.xs">
                             <v-col>
-                                <v-autocomplete label="Day" autofocus single-line v-model="questions[key][0]" :rules="[validationRules.required]" :items="listDays"></v-autocomplete>
+                                <v-autocomplete label="Day" autofocus single-line v-model="questions[key][0]" :items="listDays"></v-autocomplete>
                             </v-col>
                             <v-col>
-                                <v-autocomplete label="Month" single-line v-model="questions[key][1]" :rules="[validationRules.required]" :items="listMonths"></v-autocomplete>
+                                <v-autocomplete label="Month" single-line v-model="questions[key][1]" :items="listMonths"></v-autocomplete>
                             </v-col>
                             <v-col>
-                                <v-autocomplete single-line label="Year" v-model="questions[key][2]" :rules="[validationRules.required]" :items="listYears"></v-autocomplete>
+                                <v-autocomplete single-line label="Year" v-model="questions[key][2]" :items="listYears"></v-autocomplete>
                             </v-col>
                         </v-row>
                         <v-row v-else>
                             <v-col :cols="6" class="py-0">
-                                <v-select class="pb-0 mb-0" label="Day" autofocus single-line v-model="questions[key][0]" :rules="[validationRules.required]" :items="listDays"></v-select>
+                                <v-select class="pb-0 mb-0" label="Day" autofocus single-line v-model="questions[key][0]" :items="listDays"></v-select>
                             </v-col>
                             <v-col :cols="6" class="py-0">
-                                <v-select class="pb-0 mb-0" label="Month" single-line v-model="questions[key][1]" :rules="[validationRules.required]" :items="listMonths"></v-select>
+                                <v-select class="pb-0 mb-0" label="Month" single-line v-model="questions[key][1]"  :items="listMonths"></v-select>
                             </v-col>
                             <v-col cols="12" class="py-0">
-                                <v-select label="Year" single-line v-model="questions[key][2]" :rules="[validationRules.required]" :items="listYears"></v-select>
+                                <v-select label="Year" single-line v-model="questions[key][2]" :items="listYears"></v-select>
                             </v-col>
                         </v-row>
+                        <div v-if="questions[key].length >= 3 && !ageCheck" class="py-2" style="color: red">Sorry. You must be between 50 to 75 to qualify</div>
                         <v-btn :disabled="!isValid" x-large block class="btn-ntx" @click="stepInner++, toTop()">Next</v-btn>
                     </div>
                 </v-form>
@@ -208,7 +210,8 @@
                 <v-form v-on:submit.prevent v-if="key == 'phone' && stepInner == index" ref="form" v-model="isValid" :rules="phoneValidated ? isValid = true : isValid=false">
                     <div class="formSectionInner formSectionInner--narrow telephone">
                         <h2 class="mb-5 text-center">Contact number</h2>
-                        <v-text-field  :hint="telSearching ? 'Verifying telephone number' : null" :append-icon="telSearching ? 'mdi-loading' : 'mdi-loadingf'"  ref="telephoneField" type="tel"  single-line label="Telephone number" v-model="questions[key]" @keyup="phoneValidate"></v-text-field>
+                        <v-text-field :hint="telSearching ? 'Verifying telephone number' : null" :append-icon="telSearching ? 'mdi-loading' : 'mdi-loadingf'"  ref="telephoneField" type="tel"  single-line label="Telephone number" v-model="questions[key]" @keyup="phoneValidate"></v-text-field>
+
                         <p v-if="phoneValidated == false">Invalid UK telephone number</p>
                         <v-btn :disabled="!isValid" x-large block class="btn-ntx" @click="stepInner++, toTop()">Next</v-btn>
                     </div>
@@ -269,19 +272,16 @@
             </transition>
             <transition name="fade">
             <div v-if="key == 'success' && stepInner == index" class="formSectionInner formSectionInner--narrow">
-                <v-alert v-if="submitError" type="error">
-                    <span class="">Error submitting form</span>
-                    <ul v-for="(error, i) in submitError" :key="i">
-                        <li>{{error}}</li>
-                    </ul>
-                </v-alert>
-                <v-btn accent class="submitButton py-3" x-large block color="success" @click="postForm" :loading="sending" >Get my Free Quote
+
+                <v-btn accent class="submitButton py-3" x-large block color="success" @click="postLead" :loading="sending" >Get my Free Quote
                   <v-icon lass="mb-0 text-white" large>mdi-chevron-double-right</v-icon>
                 </v-btn>
+                 <v-alert v-if="submitError" type="error">
+                    {{submitError}}
+                 </v-alert>
                 <v-checkbox v-model="contactTicked">
                     <template v-slot:label>
-                        <div>
-                        would like to use email, text and display notifications to let you know about <b>lifecoverquoter.co.uk</b> products and services. If you do not want to receive these, un-tick this box.
+                        <div> would like to use email, text and display notifications to let you know about <b>lifecoverquoter.co.uk</b> products and services. If you do not want to receive these, un-tick this box.
                         <v-tooltip bottom>
                             <template v-slot:activator="{ on }">
                             <a target="_blank"  href="http://vuetifyjs.com" @click.stop v-on="on" >
@@ -314,7 +314,9 @@ export default {
                 phone: null,
                 success: false,
             },
+            searchTelephone: '',
             searchPostcode: '',
+            phoneValidated: null,
             contactTicked: true,
             popUp: false,
             titles: ['Mr', 'Mrs', 'Miss', 'Ms'],
@@ -361,6 +363,7 @@ export default {
             // finds the index
             Vue.delete(this.questions, q);
         },
+
         addItem(s, k, v, o) {
             //section - key - value - order/index
             // make a new array
@@ -373,10 +376,11 @@ export default {
             newArr.splice(o, 0, [k, v]);
             this.questions = Object.fromEntries(newArr)
         },
+
         requestAddress(qKey) {
             this.$axios.$get('https://api.ideal-postcodes.co.uk/v1/postcodes/' + this.searchPostcode.replace(/\s/g,'') + '?api_key=ak_jr1wo74l0sgSldKnJeTPAEo5QpHxw')
                 .then((response) => {
-                    console.log(response.result);
+                   // console.log(response.result);
                     this.popUp = true
                     this.addressList = response.result
                 })
@@ -388,17 +392,18 @@ export default {
           this.$vuetify.goTo('#theForm')
         },
         phoneValidate() {
-            if (this.$refs.telephoneField[0]['value'].length > 10) {
+            if (this.questions.phone.length > 10) {
                 this.telSearching = true
-                this.$axios.$get('https://webservices.data-8.co.uk/TelephoneLineValidation/IsValidAdvanced.json?key=CX3N-IDXM-XEFB-73WE', {
-                        "number": this.$refs.telephoneField[0]['value'],
+                console.log('searching:'+ this.questions.phone);
+                this.$axios.$post('https://webservices.data-8.co.uk/TelephoneLineValidation/IsValidAdvanced.json?key=CX3N-IDXM-XEFB-73WE', {
+                        "number": this.questions.phone,
                         "options": {
                             "UseMobileValidation": true
                         }
                     })
                     .then((response) => {
-                        console.log(response.data.Result);
-                        response.data.Result == 'Invalid' || response.data.Result == 'TemporaryInvalid' ? this.phoneValidated = false : this.phoneValidated = true
+                        console.log(response);
+                        response.Result == 'Invalid' || response.Result == 'TemporaryInvalid' ? this.phoneValidated = false : this.phoneValidated = true
                         this.telSearching = false
                     })
                     .catch((error) => {
@@ -416,32 +421,57 @@ export default {
         },
         postLead(){
             const data = {
-                    "campid": "MOTORLY",
+                    "campid": "FOREVERPROTECT",
                     "sid": "SID1",
-                    "email": "leadbyte@aol.com",
-                    "title": "Mr",
-                    "firstname": "David",
-                    "lastname": "Beckham",
-                    "building": "41",
-                    "street1": "Hope Street",
-                    "street2": "Red Hill House",
-                    "towncity": "Farndon",
-                    "county": "Cheshire",
-                    "postcode": "CH4 8PH",
-                    "phone1": "07879000191",
-                    "phone2": "07879000192",
-                    "phone3": "07879000193"
+                    "campaign_id": '606',
+                    "supplier_id": '479',
+                    "email": this.questions.email,
+                    "title": this.questions.name[3],
+                    "firstname": this.questions.name[1],
+                    "lastname": this.questions.name[2],
+                    "building": this.questions.address.building_number,
+                    "street1": this.questions.address.line_1,
+                    "street2": this.questions.address.line_2,
+                    "street3": this.questions.address.line_3,
+                    "towncity": this.questions.address.post_town,
+                    "county": this.questions.address.county,
+                    "postcode": this.questions.address.postcode,
+                    "phone": this.questions.phone,
+                    "dob" : this.questions.dob.join('/') // dd/mm/yyyy format
+
             }
             console.log(this.encodeDataToURL(data).toString().replace(/[^\x20-\x7E]/g, ''))
-            this.$axios.$post('https://my-rejected-ppi.co.uk/sub.php?lead='+this.encodeDataToURL(data).toString().replace(/[^\x20-\x7E]/g, '')
-            ).then((response) => {
-                console.log(response);
-            }).catch(function(error) {
-                console.log(error);
-            });
+            // this.$axios.$post('https://my-rejected-ppi.co.uk/sub.php?lead='+this.encodeDataToURL(data).toString().replace(/[^\x20-\x7E]/g, '')
+            // ).then((response) => {
+            //     console.log(response);
+            //     response.code == 1 ? window.location.href.replace('https://'+window.location.hostname +'/success') : this.submitError = response.response
+            // }).catch(function(error) {
+            //     console.log(error);
+            // });
         }
     },
     computed: {
+        prePopDob(){
+            this.questions.dob = [] ? this.questions.dob = [1, 1, 1970] : null;
+        },
+        ageCheck(){
+            const today_date = new Date();
+            const today_year = today_date.getFullYear();
+            const today_month = today_date.getMonth();
+            const today_day = today_date.getDate();
+            const age = today_year - this.questions.dob[2];
+
+            if ( today_month < (this.questions.dob[1] - 1))
+            {
+                age--;
+            }
+            if (((this.questions.dob[1] - 1) == today_month) && (today_day < this.questions.dob[0]))
+            {
+                age--;
+            }
+
+            return age >= 50 && age <= 75 ? true : false;
+        },
         percentageDone() {
             var countAllQuestions = Object.keys(this.questions).length;
             var countAllValues = [];

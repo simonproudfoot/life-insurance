@@ -1,7 +1,7 @@
 <template>
     <v-app>
-        <v-app-bar absolute elevation="0" app class="text-center">
-            <nuxt-link style="margin: auto; cursor: pointer" class="pt-2" tag="img" :src="'/logo.png'" to="/" width="200">
+        <v-app-bar absolute elevation="0" app class="text-center navbar">
+            <nuxt-link style="margin: auto; cursor: pointer"  tag="img" :src="'/logo.png'" to="/" width="100">
             </nuxt-link>
         </v-app-bar>
         <v-main>
@@ -36,8 +36,13 @@
 export default {
     data() {
         return {
-            title: 'Vuetify.js'
+
         }
     }
 }
 </script>
+<style scopped>
+.navbar{
+  background-color: #0b3868 !important;
+}
+</style>

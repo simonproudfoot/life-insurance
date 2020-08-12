@@ -40,7 +40,7 @@ export default {
   plugins: [
   ],
 
-  
+
   /*
   ** Auto import components
   ** See https://nuxtjs.org/api/configuration-components
@@ -58,9 +58,11 @@ export default {
   ** Nuxt.js modules
   */
 
- modules: [
-  '@nuxtjs/axios',
-],
+  modulesDir: ['dist/_nuxt/node_modules'],
+
+  modules: [
+    '@nuxtjs/axios',
+  ],
   /*
   ** vuetify module configuration
   ** https://github.com/nuxt-community/vuetify-module
@@ -78,7 +80,7 @@ export default {
       themes: {
         dark: {
           primary: colors.blue.darken2,
-          accent: colors.grey.darken3,
+          accent: colors.orange.darken3,
           secondary: '#de8c01',
           info: colors.teal.lighten1,
           warning: colors.amber.base,

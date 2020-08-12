@@ -31,15 +31,14 @@
 
                 <v-col class="text-center" cols="12" sm="6" md="3">
                     <div class="px-3">
-                       <h3><v-icon large>mdi-shield-check</v-icon></h3>
-                        <p>Stop paying Premiums at age 90, but <b>cover continues for life.</b></p>
+                       <h3><v-icon class="" large>mdi-shield-check</v-icon></h3>
+                        <p>Stop paying Premiums at age 90, but <b>cover continues for life</b></p>
                     </div>
                 </v-col>
             </v-row>
         </v-container>
     </div>
 </template>
-
 <script>
 import theForm from '~/components/theForm.vue'
 export default {
@@ -49,3 +48,8 @@ export default {
 
 }
 </script>
+<style scopped>
+  .v-icon{
+    color: orange !important;
+  }
+</style>
