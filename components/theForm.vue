@@ -183,7 +183,7 @@
             <!-- Name -->
             <transition name="fade">
                 <v-form v-on:submit.prevent v-model="isValid" v-if="key == 'name' && stepInner == index">
-                    <div class="formSectionInner formSectionInner--narrow  ">
+                    <div class="formSectionInner formSectionInner--narrow">
                         <h2 class="mb-5 text-center">Your name</h2>
                         <v-radio-group v-model="questions[key][2]" row class="justify-space-between" :rules="[validationRules.required]">
                             <template v-for="(title, i ) in titles"><v-radio :label="title" :value="title" :key="i"></v-radio>
@@ -422,13 +422,12 @@ export default {
         postLead(){
             const data = {
                     "campid": "FOREVERPROTECT",
-                    "sid": "SID1",
                     "campaign_id": '606',
                     "supplier_id": '479',
                     "email": this.questions.email,
-                    "title": this.questions.name[3],
-                    "firstname": this.questions.name[1],
-                    "lastname": this.questions.name[2],
+                    "title": this.questions.name[2],
+                    "firstname": this.questions.name[0],
+                    "lastname": this.questions.name[1],
                     "building": this.questions.address.building_number,
                     "street1": this.questions.address.line_1,
                     "street2": this.questions.address.line_2,
@@ -438,16 +437,15 @@ export default {
                     "postcode": this.questions.address.postcode,
                     "phone": this.questions.phone,
                     "dob" : this.questions.dob.join('/') // dd/mm/yyyy format
-
             }
-            console.log(this.encodeDataToURL(data).toString().replace(/[^\x20-\x7E]/g, ''))
-            // this.$axios.$post('https://my-rejected-ppi.co.uk/sub.php?lead='+this.encodeDataToURL(data).toString().replace(/[^\x20-\x7E]/g, '')
-            // ).then((response) => {
-            //     console.log(response);
-            //     response.code == 1 ? window.location.href.replace('https://'+window.location.hostname +'/success') : this.submitError = response.response
-            // }).catch(function(error) {
-            //     console.log(error);
-            // });
+            //console.log(this.encodeDataToURL(data).toString().replace(/[^\x20-\x7E]/g, ''))
+            this.$axios.$post('https://my-rejected-ppi.co.uk/sub.php?'+this.encodeDataToURL(data).toString().replace(/[^\x20-\x7E]/g, '')
+            ).then((response) => {
+                console.log(response);
+                response.code == 1 ? window.location.href.replace('https://'+window.location.hostname +'/success') : this.submitError = response.response
+            }).catch(function(error) {
+                console.log(error);
+            });
         }
     },
     computed: {
