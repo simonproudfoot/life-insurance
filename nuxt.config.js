@@ -76,16 +76,15 @@ export default {
       }
    },
     theme: {
-      dark: false,
       themes: {
-        dark: {
-          primary: colors.blue.darken2,
-          accent: colors.orange.darken3,
+        light: {
+          primary: colors.blue,
+          accent: colors.orange,
           secondary: '#de8c01',
           info: colors.teal.lighten1,
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,
-          success: colors.green.accent3
+          success: '#10ab5f'
         }
       }
     }

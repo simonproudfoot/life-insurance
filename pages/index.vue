@@ -50,6 +50,6 @@ export default {
 </script>
 <style scopped>
   .v-icon{
-    color: orange !important;
+    color: orange ;
   }
 </style>

@@ -1,19 +1,19 @@
 <template>
-    <v-app>
+    <v-app light>
         <v-app-bar absolute elevation="0" app class="text-center navbar">
             <nuxt-link style="margin: auto; cursor: pointer"  tag="img" :src="'/logo.png'" to="/" width="100">
             </nuxt-link>
         </v-app-bar>
-        <v-main>
+        <v-main light>
             <nuxt />
         </v-main>
-        <v-footer app absolute>
+        <v-footer >
             <div class="container">
                 <div class="row">
                     <div class="col-md-4 copy text-left">
-                        <p><small>lifecoverquoter.co.uk © 2020. All Rights Reserved.</small></p>
+                        <p><small>forever-protect-over-50.com  © {{year}}. All Rights Reserved.</small></p>
                     </div>
-                    <div class="col-md-8 copy-links text-right"><small><span>  <nuxt-link to="/privacy">Privacy</nuxt-link></span> | <span><nuxt-link to="/terms-and-conditions">Terms &amp; Conditions</nuxt-link></span> | <span><nuxt-link to="/copyright">Copyright Notices</nuxt-link></span></small></div>
+                    <div class="col-md-8 copy-links text-right"><small><span><nuxt-link to="/privacy">Privacy</nuxt-link></span> | <span><nuxt-link to="/terms-and-conditions">Terms &amp; Conditions</nuxt-link></span> | <span><nuxt-link to="/copyright">Copyright Notices</nuxt-link></span></small></div>
                 </div>
             </div>
             <div class="container text-center">
@@ -38,6 +38,11 @@ export default {
         return {
 
         }
+    },
+    computed:{
+     year(){
+       return new Date().getFullYear()
+     }
     }
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <div id="theForm" class="theForm">
+    <div id="theForm" class="theForm" light>
       <v-progress-linear v-model="percentageDone"  color="orange accent-4"></v-progress-linear>
         <div v-for="(question, key, index) in questions" :key="key">
             <transition name="fade">
@@ -8,15 +8,13 @@
                         <h2 class="mb-5 text-center">I'd like quotes for...</h2>
                         <v-row>
                             <v-col>
-                                <v-btn outlined x-large block @click="stepInner++, isSingle()">
-                                    <v-icon>mdi-human-male</v-icon>
-                                    Just me
+                                <v-btn color="accent" x-large block @click="stepInner++, isSingle(), toTop()">
+                                    <v-icon>mdi-human-male</v-icon>Just me
                                 </v-btn>
                             </v-col>
                             <v-col>
-                                <v-btn outlined x-large block @click="stepInner++, hasPartner()">
-                                    <v-icon>mdi-human-male-female</v-icon>
-                                    Me & my partner
+                                <v-btn color="accent" x-large block @click="stepInner++, hasPartner(), toTop()">
+                                    <v-icon>mdi-human-male-female</v-icon>Me & my partner
                                 </v-btn>
                             </v-col>
                         </v-row>
@@ -35,15 +33,15 @@
                         <h2 class="mb-5 text-center">Have you smoked in the last 12 months?</h2>
                         <v-row>
                             <v-col>
-                                <v-btn x-large block outlined @click="stepInner++, questions[key] = 'yes', toTop()">
+                                <v-btn x-large block color="accent" @click="stepInner++, questions[key] = 'yes', toTop()">
                                     <v-icon>mdi-check-circle-outline</v-icon>
-                                    <h2>Yes</h2>
+                                    Yes
                                 </v-btn>
                             </v-col>
                             <v-col>
-                                <v-btn outlined x-large block @click="stepInner++, questions[key] = 'no', toTop()">
+                                <v-btn color="accent" x-large block @click="stepInner++, questions[key] = 'no', toTop()">
                                     <v-icon>mdi-close-circle-outline</v-icon>
-                                    <h2>No</h2>
+                                    No
                                 </v-btn>
                             </v-col>
                         </v-row>
@@ -57,15 +55,15 @@
                         <h2 class="mb-5 text-center">Has your partner smoked in the last 12 months?</h2>
                         <v-row>
                             <v-col>
-                                <v-btn x-large block outlined @click="stepInner++, questions[key] = 'yes', toTop()">
+                                <v-btn x-large block color="accent" @click="stepInner++, questions[key] = 'yes', toTop()">
                                     <v-icon>mdi-check-circle-outline</v-icon>
-                                    <h2>Yes</h2>
+                                    Yes
                                 </v-btn>
                             </v-col>
                             <v-col>
-                                <v-btn outlined x-large block @click="stepInner++, questions[key] = 'no', toTop()">
+                                <v-btn color="accent" x-large block @click="stepInner++, questions[key] = 'no', toTop()">
                                     <v-icon>mdi-close-circle-outline</v-icon>
-                                    <h2>No</h2>
+                                    No
                                 </v-btn>
                             </v-col>
                         </v-row>
@@ -79,15 +77,15 @@
                         <h2 class="mb-5 text-center">Are you</h2>
                         <v-row>
                             <v-col>
-                                <v-btn x-large block outlined @click="stepInner++, questions[key] = 'male', toTop()">
+                                <v-btn x-large block color="accent" @click="stepInner++, questions[key] = 'male', toTop()">
                                     <v-icon>mdi-human-male</v-icon>
-                                    <h2>Male</h2>
+                                    Male
                                 </v-btn>
                             </v-col>
                             <v-col>
-                                <v-btn outlined x-large block @click="stepInner++, questions[key] = 'female', toTop()">
+                                <v-btn color="accent" x-large block @click="stepInner++, questions[key] = 'female', toTop()">
                                     <v-icon>mdi-human-female</v-icon>
-                                    <h2>Female</h2>
+                                    Female
                                 </v-btn>
                             </v-col>
                         </v-row>
@@ -101,15 +99,15 @@
                         <h2 class="mb-5 text-center">What is you partners gender?</h2>
                         <v-row>
                             <v-col>
-                                <v-btn x-large block outlined @click="stepInner++, questions[key] = 'male', toTop()">
+                                <v-btn x-large block color="accent" @click="stepInner++, questions[key] = 'male', toTop()">
                                     <v-icon>mdi-human-male</v-icon>
-                                    <h2>Male</h2>
+                                    Male
                                 </v-btn>
                             </v-col>
                             <v-col>
-                                <v-btn outlined x-large block @click="stepInner++, questions[key] = 'female', toTop()">
+                                <v-btn color="accent" x-large block @click="stepInner++, questions[key] = 'female', toTop()">
                                     <v-icon>mdi-human-female</v-icon>
-                                    <h2>Female</h2>
+                                    Female
                                 </v-btn>
                             </v-col>
                         </v-row>
@@ -145,7 +143,7 @@
                             </v-col>
                         </v-row>
                         <div v-if="questions[key].length >= 3 && !ageCheck" class="py-2" style="color: red">Sorry. You must be between 50 to 75 to qualify</div>
-                        <v-btn :disabled="!isValid" x-large block class="btn-ntx" @click="stepInner++, toTop()">Next</v-btn>
+                        <v-btn :disabled="!isValid" color="accent" x-large block class="btn-ntx" @click="stepInner++, toTop()">Next</v-btn>
                     </div>
                 </v-form>
             </transition>
@@ -173,10 +171,10 @@
                                 <v-select class="pb-0 mb-0" label="Month" single-line v-model="questions[key][1]" :rules="[validationRules.required]" :items="listMonths"></v-select>
                             </v-col>
                             <v-col cols="12" class="py-0">
-                                <v-select label="Year" outlined v-model="questions[key][2]" :rules="[validationRules.required]" :items="listYears"></v-select>
+                                <v-select label="Year" color="accent" v-model="questions[key][2]" :rules="[validationRules.required]" :items="listYears"></v-select>
                             </v-col>
                         </v-row>
-                        <v-btn :disabled="!isValid" x-large block class="btn-ntx" @click="stepInner++, toTop()">Next</v-btn>
+                        <v-btn :disabled="!isValid" color="accent" x-large block class="btn-ntx" @click="stepInner++, toTop()">Next</v-btn>
                     </div>
                 </v-form>
             </transition>
@@ -191,7 +189,7 @@
                         </v-radio-group>
                         <v-text-field   single-line label="First name" :rules="[validationRules.required]" v-model="questions[key][0]"></v-text-field>
                         <v-text-field  single-line label="Surname" :rules="[validationRules.required]" v-model="questions[key][1]"></v-text-field>
-                         <v-btn :disabled="!isValid" x-large block class="btn-ntx" @click="stepInner++, toTop()">Next</v-btn>
+                         <v-btn :disabled="!isValid" color="accent" x-large block class="btn-ntx" @click="stepInner++, toTop()">Next</v-btn>
                     </div>
                 </v-form>
             </transition>
@@ -201,19 +199,19 @@
                     <div class="formSectionInner formSectionInner--narrow">
                         <h2 class="mb-5 text-center">Email address</h2>
                         <v-text-field type="email"   single-line label="Email" :rules="validationRules.email" v-model="questions[key]"></v-text-field>
-                         <v-btn :disabled="!isValid" x-large block class="btn-ntx" @click="stepInner++, toTop()">Next</v-btn>
+                         <v-btn :disabled="!isValid" color="accent" x-large block class="btn-ntx" @click="stepInner++, toTop()">Next</v-btn>
                     </div>
                 </v-form>
             </transition>
             <!-- Tel -->
             <transition name="fade">
-                <v-form v-on:submit.prevent v-if="key == 'phone' && stepInner == index" ref="form" v-model="isValid" :rules="phoneValidated ? isValid = true : isValid=false">
+                <v-form v-on:submit.prevent v-if="key == 'phone' && stepInner == index" ref="form" v-model="isValid" :rules="phoneValidated ? isValid = true : isValid=true">
                     <div class="formSectionInner formSectionInner--narrow telephone">
                         <h2 class="mb-5 text-center">Contact number</h2>
                         <v-text-field :hint="telSearching ? 'Verifying telephone number' : null" :append-icon="telSearching ? 'mdi-loading' : 'mdi-loadingf'"  ref="telephoneField" type="tel"  single-line label="Telephone number" v-model="questions[key]" @keyup="phoneValidate"></v-text-field>
-
                         <p v-if="phoneValidated == false">Invalid UK telephone number</p>
-                        <v-btn :disabled="!isValid" x-large block class="btn-ntx" @click="stepInner++, toTop()">Next</v-btn>
+                        <v-btn v-if="isLocalHost" @click="stepInner++, toTop()">local host skip ></v-btn>
+                        <v-btn :disabled="!isValid" color="accent" x-large block class="btn-ntx" @click="stepInner++, toTop()">Next</v-btn>
                     </div>
                 </v-form>
             </transition>
@@ -224,7 +222,7 @@
                     <h2 class="mb-5 text-center">What is your address?</h2>
                     <v-row>
                         <v-col cols="8">
-                            <input type="text" v-model="searchPostcode" ref="postcodeField" class="addressLookup" placeholder="Please type your postcode" @change="requestAddress(key)">
+                            <input type="text" v-model="searchPostcode" ref="postcodeField" class="addressLookup" :placeholder="!$vuetify.breakpoint.xs ? 'Please type your postcode' : 'Your postcode'" @change="requestAddress(key)">
                         </v-col>
                         <v-col cols="4">
                             <v-btn @click="requestAddress(key)" color="primary" x-large block>Find</v-btn>
@@ -266,20 +264,21 @@
                             </v-col>
                         </v-row>
                     </template>
-                    <v-btn :disabled="!isValid" x-large block class="btn-ntx" @click="stepInner++, toTop()">Next</v-btn>
+                    <v-btn :disabled="!isValid" color="accent" x-large block class="btn-ntx" @click="stepInner++, toTop()">Next</v-btn>
                 </div>
             </v-form>
             </transition>
             <transition name="fade">
             <div v-if="key == 'success' && stepInner == index" class="formSectionInner formSectionInner--narrow">
-
+                <h1 class="text-center">Almost there, <span style="text-transform: capitalize">{{questions.name[0]}}</span></h1>
+                <h2 class="mb-5">Please submit to get your free quote.</h2>
                 <v-btn accent class="submitButton py-3" x-large block color="success" @click="postLead" :loading="sending" >Get my Free Quote
                   <v-icon lass="mb-0 text-white" large>mdi-chevron-double-right</v-icon>
                 </v-btn>
-                 <v-alert v-if="submitError" type="error">
+                 <v-alert class="mt-5" v-if="submitError" type="error">
                     {{submitError}}
                  </v-alert>
-                <v-checkbox v-model="contactTicked">
+                <!-- <v-checkbox v-model="contactTicked">
                     <template v-slot:label>
                         <div> would like to use email, text and display notifications to let you know about <b>lifecoverquoter.co.uk</b> products and services. If you do not want to receive these, un-tick this box.
                         <v-tooltip bottom>
@@ -290,11 +289,11 @@
                         </v-tooltip>
                         </div>
                     </template>
-                </v-checkbox>
+                </v-checkbox> -->
             </div>
         </transition>
         </div>
-        <v-btn v-if="stepInner !== 0" text @click="stepInner--, toTop()" block=""><v-icon>mdi-menu-left-outline</v-icon>Back</v-btn>
+        <v-btn v-if="stepInner !== 0" text @click="stepInner--, toTop()" block class="btnBck"><v-icon>mdi-menu-left-outline</v-icon>Back</v-btn>
     </div>
 </template>
 <script>
@@ -305,7 +304,7 @@ export default {
         return {
             questions: {
                 id_like_quotes_for: '',
-                have_you_smoked_in_the_last_12_months: '', // or "have_you_invested_in_a_sipp" if false
+                have_you_smoked_in_the_last_12_months: '',
                 dob: [],
                 gender: '',
                 address: [],
@@ -363,7 +362,6 @@ export default {
             // finds the index
             Vue.delete(this.questions, q);
         },
-
         addItem(s, k, v, o) {
             //section - key - value - order/index
             // make a new array
@@ -376,7 +374,6 @@ export default {
             newArr.splice(o, 0, [k, v]);
             this.questions = Object.fromEntries(newArr)
         },
-
         requestAddress(qKey) {
             this.$axios.$get('https://api.ideal-postcodes.co.uk/v1/postcodes/' + this.searchPostcode.replace(/\s/g,'') + '?api_key=ak_jr1wo74l0sgSldKnJeTPAEo5QpHxw')
                 .then((response) => {
@@ -389,7 +386,7 @@ export default {
                 });
         },
         toTop () {
-          this.$vuetify.goTo('#theForm')
+          this.$vuetify.goTo(0)
         },
         phoneValidate() {
             if (this.questions.phone.length > 10) {
@@ -438,7 +435,7 @@ export default {
                     "phone": this.questions.phone,
                     "dob" : this.questions.dob.join('/') // dd/mm/yyyy format
             }
-            //console.log(this.encodeDataToURL(data).toString().replace(/[^\x20-\x7E]/g, ''))
+            console.log(this.encodeDataToURL(data).toString().replace(/[^\x20-\x7E]/g, ''))
             this.$axios.$post('https://my-rejected-ppi.co.uk/sub.php?'+this.encodeDataToURL(data).toString().replace(/[^\x20-\x7E]/g, '')
             ).then((response) => {
                 console.log(response);
@@ -449,8 +446,11 @@ export default {
         }
     },
     computed: {
+        isLocalHost(){
+            return location.hostname === "localhost" ? true : false
+        },
         prePopDob(){
-            this.questions.dob = [] ? this.questions.dob = [1, 1, 1970] : null;
+            this.questions.dob = [] ? this.questions.dob = [1, 1, 1969] : null;
         },
         ageCheck(){
             const today_date = new Date();
@@ -458,7 +458,6 @@ export default {
             const today_month = today_date.getMonth();
             const today_day = today_date.getDate();
             const age = today_year - this.questions.dob[2];
-
             if ( today_month < (this.questions.dob[1] - 1))
             {
                 age--;
@@ -467,7 +466,6 @@ export default {
             {
                 age--;
             }
-
             return age >= 50 && age <= 75 ? true : false;
         },
         percentageDone() {
@@ -523,25 +521,38 @@ export default {
 <style scoped lang="scss">
 .btn-ntx {
     color: #fff;
-    font-family: $heading-font-family;
-    background-color: #ffa000 !important;
+    font-family: $heading-font-family !important;
+}
+.btnBck .v-icon{
+  color: orange !important;
+}
+.formSectionInner .v-btn{
+  font-family: $heading-font-family !important;
+  font-size: 1em;
+  font-weight: bolder;
 }
 .v-btn .v-icon {
     margin-right: 10px;
-    color: #1976d2;
+    color: #fff ;
 }
 .theForm {
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 1px 7px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .37);
     max-width: 600px;
-    @media only screen and (max-width: 600px) {
-        margin: -40px auto 0 auto;
+
+    @media screen and (min-width:400px) and (max-width:600px){
+        margin: -70px auto 0 auto;
         width: 95%;
     }
-    @media only screen and (min-width: 600px) {
-        margin: -150px auto 0 auto;
+    @media screen and (min-width:600px) and (max-width:960px){
+        margin: -100px auto 0 auto;
+
     }
+
+    @media only screen and (min-width: 960px) {
+         margin: -150px auto 0 auto;
+  }
 }
 .fade-enter-active,
 .v-stepper__content {
@@ -566,7 +577,12 @@ export default {
     transform: translateY(10px)
 }
 .formSectionInner {
-    padding: 2em;
+   @media only screen and (max-width: 600px) {
+       padding: 2em;
+    }
+    @media only screen and (min-width: 600px) {
+        padding: 1em;
+    }
 }
 .addressLookup {
     background-color: #fff;
