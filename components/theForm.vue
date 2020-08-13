@@ -1,6 +1,7 @@
 <template>
     <div id="theForm" class="theForm" light>
       <v-progress-linear v-model="percentageDone"  color="orange accent-4"></v-progress-linear>
+
         <div v-for="(question, key, index) in questions" :key="key">
             <transition name="fade">
                 <v-form v-on:submit.prevent v-model="isValid" v-if="key == 'id_like_quotes_for' && stepInner == index">
@@ -346,6 +347,8 @@ export default {
         }
     },
     methods: {
+
+
         hasPartner() {
             this.questions.id_like_quotes_for = 'myself_and_partner'
             this.addItem('questions', 'has_your_partner_smoked_in_the_last_12_months', '', 2);
@@ -419,8 +422,8 @@ export default {
         postLead(){
             const data = {
                     "campid": "FOREVERPROTECT",
-                    "campaign_id": '606',
-                    "supplier_id": '479',
+                    //"campaign_id": '606',
+                   // "supplier_id": '479',
                     "email": this.questions.email,
                     "title": this.questions.name[2],
                     "firstname": this.questions.name[0],
@@ -438,8 +441,9 @@ export default {
             console.log(this.encodeDataToURL(data).toString().replace(/[^\x20-\x7E]/g, ''))
             this.$axios.$post('https://my-rejected-ppi.co.uk/sub.php?'+this.encodeDataToURL(data).toString().replace(/[^\x20-\x7E]/g, '')
             ).then((response) => {
-                console.log(response);
-                response.code == 1 ? window.location.href.replace('https://'+window.location.hostname +'/success') : this.submitError = response.response
+                console.log(response.code);
+                window.location.replace('/success')
+
             }).catch(function(error) {
                 console.log(error);
             });
@@ -453,11 +457,11 @@ export default {
             this.questions.dob = [] ? this.questions.dob = [1, 1, 1969] : null;
         },
         ageCheck(){
-            const today_date = new Date();
-            const today_year = today_date.getFullYear();
-            const today_month = today_date.getMonth();
-            const today_day = today_date.getDate();
-            const age = today_year - this.questions.dob[2];
+            var today_date = new Date();
+            var today_year = today_date.getFullYear();
+            var today_month = today_date.getMonth();
+            var today_day = today_date.getDate();
+            var age = today_year - this.questions.dob[2];
             if ( today_month < (this.questions.dob[1] - 1))
             {
                 age--;
