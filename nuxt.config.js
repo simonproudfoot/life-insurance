@@ -60,6 +60,13 @@ export default {
 
   modulesDir: ['dist/_nuxt/node_modules'],
 
+
+  axios: {
+//    baseURL: 'https://mediamaze-mothership.online/',
+    proxyHeaders: false,
+    credentials: false
+  },
+
   modules: [
     '@nuxtjs/axios',
   ],
