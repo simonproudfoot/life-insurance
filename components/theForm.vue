@@ -206,7 +206,7 @@
             </transition>
             <!-- Tel -->
             <transition name="fade">
-                <v-form v-on:submit.prevent v-if="key == 'phone' && stepInner == index" ref="form" v-model="isValid" :rules="phoneValidated ? isValid = true : isValid=true">
+                <v-form v-on:submit.prevent v-if="key == 'phone' && stepInner == index" ref="form" v-model="isValid" :rules="phoneValidated ? isValid = true : isValid=false">
                     <div class="formSectionInner formSectionInner--narrow telephone">
                         <h2 class="mb-5 text-center">Contact number</h2>
                         <v-text-field :hint="telSearching ? 'Verifying telephone number' : null" :append-icon="telSearching ? 'mdi-loading' : 'mdi-loadingf'"  ref="telephoneField" type="tel"  single-line label="Telephone number" v-model="questions[key]" @keyup="phoneValidate"></v-text-field>
@@ -347,8 +347,6 @@ export default {
         }
     },
     methods: {
-
-
         hasPartner() {
             this.questions.id_like_quotes_for = 'myself_and_partner'
             this.addItem('questions', 'has_your_partner_smoked_in_the_last_12_months', '', 2);
@@ -436,10 +434,11 @@ export default {
                     "county": this.questions.address.county,
                     "postcode": this.questions.address.postcode,
                     "phone": this.questions.phone,
-                    "dob" : this.questions.dob.join('/') // dd/mm/yyyy format
+                    "dob" : this.questions.dob.join('/')
+                    // dd/mm/yyyy format
             }
             console.log(this.encodeDataToURL(data).toString().replace(/[^\x20-\x7E]/g, ''))
-            this.$axios.$post('https://my-rejected-ppi.co.uk/sub.php?'+this.encodeDataToURL(data).toString().replace(/[^\x20-\x7E]/g, '')
+            this.$axios.$post('https://mediamaze-mothership.online/sub.php?'+this.encodeDataToURL(data).toString().replace(/[^\x20-\x7E]/g, '')
             ).then((response) => {
                 console.log(response.code);
                 window.location.replace('/success')
