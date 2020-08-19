@@ -1,5 +1,4 @@
 import colors from 'vuetify/es5/util/colors'
-
 export default {
   /*
   ** Nuxt rendering mode
@@ -37,10 +36,7 @@ export default {
   ** Plugins to load before mounting the App
   ** https://nuxtjs.org/guide/plugins
   */
-  plugins: [
-  ],
-
-
+  plugins: [{ src: '~plugins/ga.js', mode: 'client' }],
   /*
   ** Auto import components
   ** See https://nuxtjs.org/api/configuration-components
@@ -52,24 +48,43 @@ export default {
   buildModules: [
     '@nuxtjs/vuetify',
   ],
-
-
   /*
   ** Nuxt.js modules
   */
-
   modulesDir: ['dist/_nuxt/node_modules'],
-
-
   axios: {
-//    baseURL: 'https://mediamaze-mothership.online/',
+    // baseURL: 'https://mediamaze-mothership.online/',
     proxyHeaders: false,
     credentials: false
   },
-
   modules: [
     '@nuxtjs/axios',
+    '@nuxtjs/proxy',
+
+    // FB Pixel
+    ['nuxt-facebook-pixel-module', {
+      track: 'PageView',
+      pixelId: '255576682371157',
+      disabled: false
+    }],
+
+    ['@yabhq/nuxt-hotjar', {
+      hjid: 1951428, // required
+      hjsv: 6, // optional
+      defer: false, // optional
+      async: false, // optional
+      dev: false // optional
+    }],
+  
+
   ],
+
+  axios: {
+    proxy: true
+  },
+  proxy: {
+    '/api/': { target: 'https://mediamaze-mothership.online/', pathRewrite: { '^/api/': '' }, changeOrigin: true }
+  },
   /*
   ** vuetify module configuration
   ** https://github.com/nuxt-community/vuetify-module
@@ -81,7 +96,7 @@ export default {
       font: {
         family: 'Nunito',
       }
-   },
+    },
     theme: {
       themes: {
         light: {
@@ -100,8 +115,8 @@ export default {
   ** Build configuration
   ** See https://nuxtjs.org/api/configuration-build/
   */
- build: {
-  analyze:true,
-  extractCSS: true
-}
+  build: {
+    analyze: true,
+    extractCSS: true
+  }
 }

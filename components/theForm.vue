@@ -1,12 +1,12 @@
 <template>
     <div id="theForm" class="theForm" light>
       <v-progress-linear v-model="percentageDone"  color="orange accent-4"></v-progress-linear>
-
         <div v-for="(question, key, index) in questions" :key="key">
             <transition name="fade">
                 <v-form v-on:submit.prevent v-model="isValid" v-if="key == 'id_like_quotes_for' && stepInner == index">
                     <div class="formSectionInner">
                         <h2 class="mb-5 text-center">I'd like quotes for...</h2>
+                        
                         <v-row>
                             <v-col>
                                 <v-btn color="accent" x-large block @click="stepInner++, isSingle(), toTop()">
@@ -268,20 +268,22 @@
                     <v-btn :disabled="!isValid" color="accent" x-large block class="btn-ntx" @click="stepInner++, toTop()">Next</v-btn>
                 </div>
             </v-form>
+            
             </transition>
             <transition name="fade">
             <div v-if="key == 'success' && stepInner == index" class="formSectionInner formSectionInner--narrow">
                 <h1 class="text-center">Almost there, <span style="text-transform: capitalize">{{questions.name[0]}}</span></h1>
                 <h2 class="mb-5">Please submit to get your free quote.</h2>
-                <v-btn accent class="submitButton py-3" x-large block color="success" @click="postLead" :loading="sending" >Get my Free Quote
+                <v-btn accent class="submitButton" height="80" x-large block color="success" @click="postLead" :disabled="sending" :loading="sending" >Get my Free Quote
                   <v-icon lass="mb-0 text-white" large>mdi-chevron-double-right</v-icon>
                 </v-btn>
+                <div v-if="sending">Please wait whilst we submit your details</div>
                  <v-alert class="mt-5" v-if="submitError" type="error">
                     {{submitError}}
                  </v-alert>
                 <!-- <v-checkbox v-model="contactTicked">
                     <template v-slot:label>
-                        <div> would like to use email, text and display notifications to let you know about <b>lifecoverquoter.co.uk</b> products and services. If you do not want to receive these, un-tick this box.
+                        <div> would like to use email, text and display notifications to let you know about <b>forever-protect-over-50.com</b> products and services. If you do not want to receive these, un-tick this box.
                         <v-tooltip bottom>
                             <template v-slot:activator="{ on }">
                             <a target="_blank"  href="http://vuetifyjs.com" @click.stop v-on="on" >
@@ -294,7 +296,7 @@
             </div>
         </transition>
         </div>
-        <v-btn v-if="stepInner !== 0" text @click="stepInner--, toTop()" block class="btnBck"><v-icon>mdi-menu-left-outline</v-icon>Back</v-btn>
+        <v-btn :disabled="sending" v-if="stepInner !== 0" text @click="stepInner--, toTop()" block class="btnBck"><v-icon>mdi-menu-left-outline</v-icon>Back</v-btn>
     </div>
 </template>
 <script>
@@ -314,6 +316,7 @@ export default {
                 phone: null,
                 success: false,
             },
+            userIP: '',
             searchTelephone: '',
             searchPostcode: '',
             phoneValidated: null,
@@ -375,6 +378,7 @@ export default {
             newArr.splice(o, 0, [k, v]);
             this.questions = Object.fromEntries(newArr)
         },
+  
         requestAddress(qKey) {
             this.$axios.$get('https://api.ideal-postcodes.co.uk/v1/postcodes/' + this.searchPostcode.replace(/\s/g,'') + '?api_key=ak_jr1wo74l0sgSldKnJeTPAEo5QpHxw')
                 .then((response) => {
@@ -420,8 +424,8 @@ export default {
         postLead(){
             const data = {
                     "campid": "FOREVERPROTECT",
-                    //"campaign_id": '606',
-                   // "supplier_id": '479',
+                    "campaign_id": '606',
+                    "supplier_id": '479',
                     "email": this.questions.email,
                     "title": this.questions.name[2],
                     "firstname": this.questions.name[0],
@@ -434,11 +438,15 @@ export default {
                     "county": this.questions.address.county,
                     "postcode": this.questions.address.postcode,
                     "phone": this.questions.phone,
-                    "dob" : this.questions.dob.join('/')
-                    // dd/mm/yyyy format
+                    "dob" : this.questions.dob.join('/'),
+                    "consumer_ip_address" : this.userIP
             }
+            //const PROXY_URL = 'https://cors-anywhere.herokuapp.com/';
+            //const URL = 'https://mediamaze-mothership.online/sub.php';
+            const URL = "https://forever-protect-over-50.com/sendData.php"
             console.log(this.encodeDataToURL(data).toString().replace(/[^\x20-\x7E]/g, ''))
-            this.$axios.$post('https://mediamaze-mothership.online/sub.php?'+this.encodeDataToURL(data).toString().replace(/[^\x20-\x7E]/g, '')
+            this.$axios.$post(URL+"?"+this.encodeDataToURL(data).toString().replace(/[^\x20-\x7E]/g, '')
+            
             ).then((response) => {
                 console.log(response.code);
                 window.location.replace('/success')
@@ -519,6 +527,13 @@ export default {
             }
         }
     },
+    mounted(){
+    // get user IP
+    fetch('https://api.ipify.org?format=json')
+        .then(x => x.json()).then(({ ip }) => {
+            this.userIP = ip;
+        });
+    }
 }
 </script>
 <style scoped lang="scss">
