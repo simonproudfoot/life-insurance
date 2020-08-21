@@ -155,13 +155,13 @@
                         <h2 class="mb-5 text-center">What is your partners date of birth</h2>
                         <v-row v-if="!$vuetify.breakpoint.xs">
                             <v-col>
-                                <v-autocomplete label="Day" autofocus single-line v-model="questions[key][0]" :rules="[validationRules.required]" :items="listDays"></v-autocomplete>
+                                <v-autocomplete  label="Day" autofocus single-line v-model="questions[key][0]" :rules="[validationRules.required]" :items="listDays"></v-autocomplete>
                             </v-col>
                             <v-col>
                                 <v-autocomplete label="Month" single-line v-model="questions[key][1]" :rules="[validationRules.required]" :items="listMonths"></v-autocomplete>
                             </v-col>
                             <v-col>
-                                <v-autocomplete single-line label="Year" v-model="questions[key][2]" :rules="[validationRules.required]" :items="listYears"></v-autocomplete>
+                                <v-autocomplete @click="defaultYear" single-line label="Year" v-model="questions[key][2]" :rules="[validationRules.required]" :items="listYears"></v-autocomplete>
                             </v-col>
                         </v-row>
                         <v-row v-else>
@@ -281,6 +281,7 @@
                  <v-alert class="mt-5" v-if="submitError" type="error">
                     {{submitError}}
                  </v-alert>
+                 <p class="mt-5">By clicking <i>"Get my Free Quote"</i> you agree to be contacted by telephone or email by Promis Life, an FCA Authorised Firm, and confirm that you have read and agreed to our <a href="/terms-and-conditions" target="_blank">Terms & Conditions</a> and <a href="/privacy" target="_blank">Privacy Policy</a></p>
                 <!-- <v-checkbox v-model="contactTicked">
                     <template v-slot:label>
                         <div> would like to use email, text and display notifications to let you know about <b>forever-protect-over-50.com</b> products and services. If you do not want to receive these, un-tick this box.
@@ -350,6 +351,9 @@ export default {
         }
     },
     methods: {
+        defaultYear(){
+            alert('year')
+        },
         hasPartner() {
             this.questions.id_like_quotes_for = 'myself_and_partner'
             this.addItem('questions', 'has_your_partner_smoked_in_the_last_12_months', '', 2);
@@ -437,7 +441,7 @@ export default {
                     "towncity": this.questions.address.post_town,
                     "county": this.questions.address.county,
                     "postcode": this.questions.address.postcode,
-                    "phone": this.questions.phone,
+                    "phone1": this.questions.phone,
                     "dob" : this.questions.dob.join('/'),
                     "consumer_ip_address" : this.userIP
             }
