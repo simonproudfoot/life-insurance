@@ -199,14 +199,14 @@
                 <v-form v-on:submit.prevent v-if="key == 'email' && stepInner == index" ref="form" v-model="isValid">
                     <div class="formSectionInner formSectionInner--narrow">
                         <h2 class="mb-5 text-center">Email address</h2>
-                        <v-text-field type="email"   single-line label="Email" :rules="validationRules.email" v-model="questions[key]"></v-text-field>
+                        <v-text-field type="email" single-line label="Email" :rules="validationRules.email" v-model="questions[key]"></v-text-field>
                          <v-btn :disabled="!isValid" color="accent" x-large block class="btn-ntx" @click="stepInner++, toTop()">Next</v-btn>
                     </div>
                 </v-form>
             </transition>
             <!-- Tel -->
             <transition name="fade">
-                <v-form v-on:submit.prevent v-if="key == 'phone' && stepInner == index" ref="form" v-model="isValid" :rules="phoneValidated ? isValid = true : isValid=false">
+                <v-form v-on:submit.prevent v-if="key == 'phone' && stepInner == index" ref="form" v-model="isValid" >
                     <div class="formSectionInner formSectionInner--narrow telephone">
                         <h2 class="mb-5 text-center">Contact number</h2>
                         <v-text-field :hint="telSearching ? 'Verifying telephone number' : null"  ref="telephoneField" type="tel"  single-line label="Telephone number" v-model="questions[key]"></v-text-field>
@@ -320,6 +320,7 @@ export default {
             userIP: '',
             searchTelephone: '',
             searchPostcode: '',
+            telSearching: false,
             phoneValidated: null,
             contactTicked: true,
             popUp: false,
@@ -398,7 +399,7 @@ export default {
           this.$vuetify.goTo(0)
         },
         phoneValidate() {
-            if (this.questions.phone.length > 10) {
+         
                 this.telSearching = true
                 console.log('searching:'+ this.questions.phone);
                 this.$axios.$post('https://webservices.data-8.co.uk/TelephoneLineValidation/IsValidAdvanced.json?key=CX3N-IDXM-XEFB-73WE', {
@@ -412,8 +413,10 @@ export default {
                         response.Result == 'Invalid' || response.Result == 'TemporaryInvalid' ? this.phoneValidated = false : this.phoneValidated = true
                         this.telSearching = false
                         this.stepInner++
+                        this.isValid = true
                     })
                     .catch((error) => {
+                        this.isValid = false
                         this.telError = 'This is not a valid UK number'
                         setTimeout(() => {
                             this.telError = '';
@@ -422,7 +425,7 @@ export default {
                         this.telSearching = false
 
                     });
-            }
+            
         },
         encodeDataToURL(data) {
             return Object.keys(data).map(value => `${value}=${encodeURIComponent(data[value])}`).join('&');
