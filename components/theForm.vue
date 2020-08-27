@@ -209,10 +209,9 @@
                 <v-form v-on:submit.prevent v-if="key == 'phone' && stepInner == index" ref="form" v-model="isValid" :rules="phoneValidated ? isValid = true : isValid=false">
                     <div class="formSectionInner formSectionInner--narrow telephone">
                         <h2 class="mb-5 text-center">Contact number</h2>
-                      
                         <v-text-field :hint="telSearching ? 'Verifying telephone number' : null"  ref="telephoneField" type="tel"  single-line label="Telephone number" v-model="questions[key]"></v-text-field>
                         <p v-if="phoneValidated == false">Invalid UK telephone number</p>
-                        <v-btn v-if="isLocalHost" @click="stepInner++, toTop()">local host skip ></v-btn>
+                        <v-btn color="accent" x-large block v-if="isLocalHost" @click="stepInner++, toTop()">localhost skip ></v-btn>
                         <v-btn :loading="telSearching" :disabled="!questions[key]" color="accent" x-large block class="btn-ntx" @click="phoneValidate(), toTop()">Next</v-btn>
                     </div>
                 </v-form>
@@ -412,7 +411,7 @@ export default {
                         console.log(response);
                         response.Result == 'Invalid' || response.Result == 'TemporaryInvalid' ? this.phoneValidated = false : this.phoneValidated = true
                         this.telSearching = false
-                        stepInner++
+                        this.stepInner++
                     })
                     .catch((error) => {
                         this.telError = 'This is not a valid UK number'
@@ -421,7 +420,7 @@ export default {
                         }, 2000);
                         console.log(error);
                         this.telSearching = false
-                        
+
                     });
             }
         },
