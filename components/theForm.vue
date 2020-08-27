@@ -6,7 +6,6 @@
                 <v-form v-on:submit.prevent v-model="isValid" v-if="key == 'id_like_quotes_for' && stepInner == index">
                     <div class="formSectionInner">
                         <h2 class="mb-5 text-center">I'd like quotes for...</h2>
-    
                         <v-row>
                             <v-col>
                                 <v-btn color="accent" x-large block @click="stepInner++, isSingle(), toTop()">
@@ -189,7 +188,7 @@
                         <h2 class="mb-5 text-center">Your name</h2>
                         <v-radio-group v-model="questions[key][2]" row class="justify-space-between" :rules="[validationRules.required]">
                             <template v-for="(title, i ) in titles"><v-radio :label="title" :value="title" :key="i"></v-radio>
-</template>
+                    </template>
                         </v-radio-group>
                         <v-text-field   single-line label="First name" :rules="[validationRules.required]" v-model="questions[key][0]"></v-text-field>
                         <v-text-field  single-line label="Surname" :rules="[validationRules.required]" v-model="questions[key][1]"></v-text-field>
@@ -221,7 +220,7 @@
             </transition>
             <!-- Address  -->
             <transition name="fade">
-            <v-form v-on:submit.prevent transition="fade-transition" v-if="key == 'address' && stepInner == index"  :rule="questions[key].length !== 0 ? isValid = true: isValid = false" >
+            <v-form v-on:submit.prevent transition="fade-transition" v-if="key == 'address' && stepInner == index"  :rule="questions[key].length !== 0 && questions[key].line_1 && questions[key].postcode && questions[key].post_town ? isValid = true: isValid = false" >
                 <div class="formSectionInner">
                     <h2 class="mb-5 text-center">What is your address?</h2>
                     <v-row>
@@ -249,29 +248,28 @@
                             <v-divider></v-divider>
                         </v-card>
                     </v-dialog>
-<template v-if="questions[key]">
-    <v-row class="addressDeets">
-        <v-col cols="12" class="pb-0">
-            <v-text-field type="text" v-model="questions[key].line_1" single-line label="Address line 1" />
-        </v-col>
-        <v-col cols="12" class="pb-0">
-            <v-text-field type="text" v-model="questions[key].line_2" single-line label="Address line 2" />
-        </v-col>
-        <v-col cols="12" class="pb-0">
-            <v-text-field type="text" v-model="questions[key].line_3" d single-line label="Address line 3" />
-        </v-col>
-        <v-col cols="6" class="pb-0">
-            <v-text-field type="text" v-model="questions[key].post_town" d single-line label="Town/city" />
-        </v-col>
-        <v-col cols="6" class="pb-0">
-            <v-text-field type="text" v-model="questions[key].postcode" single-line label="Postcode" />
-        </v-col>
-    </v-row>
-</template>
+                    <template v-if="questions[key]">
+                        <v-row class="addressDeets">
+                            <v-col cols="12" class="pb-0">
+                                <v-text-field type="text" v-model="questions[key].line_1" single-line label="Address line 1" />
+                            </v-col>
+                            <v-col cols="12" class="pb-0">
+                                <v-text-field type="text" v-model="questions[key].line_2" single-line label="Address line 2" />
+                            </v-col>
+                            <v-col cols="12" class="pb-0">
+                                <v-text-field type="text" v-model="questions[key].line_3" d single-line label="Address line 3" />
+                            </v-col>
+                            <v-col cols="6" class="pb-0">
+                                <v-text-field type="text" v-model="questions[key].post_town" d single-line label="Town/city" />
+                            </v-col>
+                            <v-col cols="6" class="pb-0">
+                                <v-text-field disabled type="text" v-model="questions[key].postcode" single-line label="Postcode" />
+                            </v-col>
+                        </v-row>
+                    </template>
                     <v-btn :disabled="!isValid" color="accent" x-large block class="btn-ntx" @click="stepInner++, toTop()">Next</v-btn>
                 </div>
             </v-form>
-            
             </transition>
             <transition name="fade">
             <div v-if="key == 'success' && stepInner == index" class="formSectionInner formSectionInner--narrow">
@@ -303,7 +301,6 @@
         <v-btn :disabled="sending" v-if="stepInner !== 0" text @click="stepInner--, toTop()" block class="btnBck"><v-icon>mdi-menu-left-outline</v-icon>Back</v-btn>
     </div>
 </template>
-
 <script>
 import Vue from 'vue';
 export default {
@@ -331,7 +328,7 @@ export default {
             titles: ['Mr', 'Mrs', 'Miss', 'Ms'],
             addressList: [],
             sCount: 0,
-            stepInner: 7, // must start at 0
+            stepInner: 0, // must start at 0
             current: 0,
             numberOfsections: 0,
             isValid: false,
@@ -345,7 +342,7 @@ export default {
                 counter: (value) => !!value.length <= 11 || "Min 11 numbers",
                 email: [
                     (v) => !!v || "E-mail is required",
-                    (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
+                    (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || "E-mail must be valid",
                 ],
                 telephoneRules: [
                     (v) => !!v || "Required",
@@ -387,7 +384,6 @@ export default {
             newArr.splice(o, 0, [k, v]);
             this.questions = Object.fromEntries(newArr)
         },
-
         requestAddress(qKey) {
             this.$axios.$get('https://api.ideal-postcodes.co.uk/v1/postcodes/' + this.searchPostcode.replace(/\s/g, '') + '?api_key=ak_jr1wo74l0sgSldKnJeTPAEo5QpHxw')
                 .then((response) => {
@@ -403,7 +399,6 @@ export default {
             this.$vuetify.goTo(0)
         },
         phoneValidate() {
-
             this.telSearching = true
             console.log('searching:' + this.questions.phone);
             this.$axios.$post('https://webservices.data-8.co.uk/TelephoneLineValidation/IsValidAdvanced.json?key=CX3N-IDXM-XEFB-73WE', {
@@ -413,7 +408,6 @@ export default {
                     }
                 })
                 .then((response) => {
-
                     if (response.Result == 'Invalid' || response.Result == 'TemporaryInvalid') {
                         this.isValid = false
                         this.phoneValidated = false
@@ -433,9 +427,7 @@ export default {
                     }, 2000);
                     console.log(error);
                     this.telSearching = false
-
                 });
-
         },
         encodeDataToURL(data) {
             return Object.keys(data).map(value => `${value}=${encodeURIComponent(data[value])}`).join('&');
@@ -463,11 +455,9 @@ export default {
             const URL = "https://forever-protect-over-50.com/"
             console.log(this.encodeDataToURL(data).toString().replace(/[^\x20-\x7E]/g, ''))
             this.$axios.$post(URL + "?" + this.encodeDataToURL(data).toString().replace(/[^\x20-\x7E]/g, '')
-
             ).then((response) => {
                 console.log(response.code);
                 window.location.replace('/success')
-
             }).catch(function(error) {
                 console.log(error);
             });
@@ -551,28 +541,23 @@ export default {
     }
 }
 </script>
-
 <style scoped lang="scss">
 .btn-ntx {
     color: #fff;
     font-family: $heading-font-family !important;
 }
-
 .btnBck .v-icon {
     color: orange !important;
 }
-
 .formSectionInner .v-btn {
     font-family: $heading-font-family !important;
     font-size: 1em;
     font-weight: bolder;
 }
-
 .v-btn .v-icon {
     margin-right: 10px;
     color: #fff;
 }
-
 .theForm {
     background-color: #fff;
     border-radius: 8px;
@@ -589,34 +574,28 @@ export default {
         margin: -150px auto 0 auto;
     }
 }
-
 .fade-enter-active,
 .v-stepper__content {
     transition: all .3s ease-in-out !important;
 }
-
 .v-stepper {
     box-shadow: none !important;
     box-shadow: 0 !important;
 }
-
 .fade-enter-active,
 .fade-leave-active,
 .v-stepper__content {
     opacity: 1;
     transform: translateY(0)
 }
-
 .fade-enter {
     transition-delay: 3s
 }
-
 .fade-enter,
 .fade-leave-to {
     opacity: 0;
     transform: translateY(10px)
 }
-
 .formSectionInner {
     @media only screen and (max-width: 600px) {
         padding: 2em;
@@ -625,7 +604,6 @@ export default {
         padding: 1em;
     }
 }
-
 .addressLookup {
     background-color: #fff;
     padding: 0.5rem 1rem;
@@ -646,29 +624,24 @@ export default {
     padding: 13px 10px;
     box-shadow: 0 2px 3px #00000014;
 }
-
 .addressDeets {
     .v-text-field__details {
         display: none !important;
     }
 }
-
 .addressField-0 {
     width: 40%;
     display: inline-block;
 }
-
 .addressField-1 {
     width: 100%;
     display: inline-block;
 }
-
 .addressField-2 {
     width: 60%;
     display: inline-block;
     padding-right: 12px;
 }
-
 .addressField-3 {
     width: 40%;
     display: inline-block;
