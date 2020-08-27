@@ -209,10 +209,11 @@
                 <v-form v-on:submit.prevent v-if="key == 'phone' && stepInner == index" ref="form" v-model="isValid" :rules="phoneValidated ? isValid = true : isValid=false">
                     <div class="formSectionInner formSectionInner--narrow telephone">
                         <h2 class="mb-5 text-center">Contact number</h2>
-                        <v-text-field :hint="telSearching ? 'Verifying telephone number' : null" :append-icon="telSearching ? 'mdi-loading' : 'mdi-loadingf'"  ref="telephoneField" type="tel"  single-line label="Telephone number" v-model="questions[key]" @keyup="phoneValidate"></v-text-field>
+                      
+                        <v-text-field :hint="telSearching ? 'Verifying telephone number' : null"  ref="telephoneField" type="tel"  single-line label="Telephone number" v-model="questions[key]"></v-text-field>
                         <p v-if="phoneValidated == false">Invalid UK telephone number</p>
                         <v-btn v-if="isLocalHost" @click="stepInner++, toTop()">local host skip ></v-btn>
-                        <v-btn :disabled="!isValid" color="accent" x-large block class="btn-ntx" @click="stepInner++, toTop()">Next</v-btn>
+                        <v-btn :loading="telSearching" :disabled="!questions[key]" color="accent" x-large block class="btn-ntx" @click="phoneValidate(), toTop()">Next</v-btn>
                     </div>
                 </v-form>
             </transition>
@@ -326,7 +327,7 @@ export default {
             titles: ['Mr', 'Mrs', 'Miss', 'Ms'],
             addressList: [],
             sCount: 0,
-            stepInner: 0, // must start at 0
+            stepInner: 7, // must start at 0
             current: 0,
             numberOfsections: 0,
             isValid: false,
@@ -411,6 +412,7 @@ export default {
                         console.log(response);
                         response.Result == 'Invalid' || response.Result == 'TemporaryInvalid' ? this.phoneValidated = false : this.phoneValidated = true
                         this.telSearching = false
+                        stepInner++
                     })
                     .catch((error) => {
                         this.telError = 'This is not a valid UK number'
@@ -419,6 +421,7 @@ export default {
                         }, 2000);
                         console.log(error);
                         this.telSearching = false
+                        
                     });
             }
         },
@@ -445,9 +448,7 @@ export default {
                     "dob" : this.questions.dob.join('/'),
                     "consumer_ip_address" : this.userIP
             }
-            //const PROXY_URL = 'https://cors-anywhere.herokuapp.com/';
-            //const URL = 'https://mediamaze-mothership.online/sub.php';
-            const URL = "https://forever-protect-over-50.com/sendData.php"
+            const URL = "https://forever-protect-over-50.com/"
             console.log(this.encodeDataToURL(data).toString().replace(/[^\x20-\x7E]/g, ''))
             this.$axios.$post(URL+"?"+this.encodeDataToURL(data).toString().replace(/[^\x20-\x7E]/g, '')
             
@@ -462,7 +463,7 @@ export default {
     },
     computed: {
         isLocalHost(){
-            return location.hostname === "localhost" ? true : false
+            //return location.hostname === "localhost" ? true : false
         },
         prePopDob(){
             this.questions.dob = [] ? this.questions.dob = [1, 1, 1969] : null;

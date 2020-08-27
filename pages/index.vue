@@ -21,7 +21,6 @@
                         <p><b>Fixed monthly premium options</b> available</p>
                     </div>
                 </v-col>
-
                 <v-col class="text-center" cols="12" sm="6" md="3">
                     <div class="px-3">
                         <h3><v-icon large>mdi-shield-check</v-icon></h3>
