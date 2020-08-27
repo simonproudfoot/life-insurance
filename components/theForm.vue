@@ -1,12 +1,12 @@
 <template>
     <div id="theForm" class="theForm" light>
-      <v-progress-linear v-model="percentageDone"  color="orange accent-4"></v-progress-linear>
+        <v-progress-linear v-model="percentageDone" color="orange accent-4"></v-progress-linear>
         <div v-for="(question, key, index) in questions" :key="key">
             <transition name="fade">
                 <v-form v-on:submit.prevent v-model="isValid" v-if="key == 'id_like_quotes_for' && stepInner == index">
                     <div class="formSectionInner">
                         <h2 class="mb-5 text-center">I'd like quotes for...</h2>
-                        
+    
                         <v-row>
                             <v-col>
                                 <v-btn color="accent" x-large block @click="stepInner++, isSingle(), toTop()">
@@ -21,9 +21,12 @@
                         </v-row>
                     </div>
                     <v-row class="trustLogos" align="center">
-                        <v-col class="text-center mb-3 col"><v-img class="ml-auto mr-auto" src="/reviews-trust-logo.png" width="65"/></v-col>
-                        <v-col class="text-center mb-3 col"><v-img class="ml-auto mr-auto" src="/comodo.png" width="65"/></v-col>
-                        <v-col class="text-center mb-3 col"><v-img class="ml-auto mr-auto" src="/ico.png" width="65"/></v-col>
+                        <v-col class="text-center mb-3 col">
+                            <v-img class="ml-auto mr-auto" src="/reviews-trust-logo.png" width="65" /></v-col>
+                        <v-col class="text-center mb-3 col">
+                            <v-img class="ml-auto mr-auto" src="/comodo.png" width="65" /></v-col>
+                        <v-col class="text-center mb-3 col">
+                            <v-img class="ml-auto mr-auto" src="/ico.png" width="65" /></v-col>
                     </v-row>
                 </v-form>
             </transition>
@@ -137,7 +140,7 @@
                                 <v-select class="pb-0 mb-0" label="Day" autofocus single-line v-model="questions[key][0]" :items="listDays"></v-select>
                             </v-col>
                             <v-col :cols="6" class="py-0">
-                                <v-select class="pb-0 mb-0" label="Month" single-line v-model="questions[key][1]"  :items="listMonths"></v-select>
+                                <v-select class="pb-0 mb-0" label="Month" single-line v-model="questions[key][1]" :items="listMonths"></v-select>
                             </v-col>
                             <v-col cols="12" class="py-0">
                                 <v-select label="Year" single-line v-model="questions[key][2]" :items="listYears"></v-select>
@@ -155,7 +158,7 @@
                         <h2 class="mb-5 text-center">What is your partners date of birth</h2>
                         <v-row v-if="!$vuetify.breakpoint.xs">
                             <v-col>
-                                <v-autocomplete  label="Day" autofocus single-line v-model="questions[key][0]" :rules="[validationRules.required]" :items="listDays"></v-autocomplete>
+                                <v-autocomplete label="Day" autofocus single-line v-model="questions[key][0]" :rules="[validationRules.required]" :items="listDays"></v-autocomplete>
                             </v-col>
                             <v-col>
                                 <v-autocomplete label="Month" single-line v-model="questions[key][1]" :rules="[validationRules.required]" :items="listMonths"></v-autocomplete>
@@ -186,7 +189,7 @@
                         <h2 class="mb-5 text-center">Your name</h2>
                         <v-radio-group v-model="questions[key][2]" row class="justify-space-between" :rules="[validationRules.required]">
                             <template v-for="(title, i ) in titles"><v-radio :label="title" :value="title" :key="i"></v-radio>
-                        </template>
+</template>
                         </v-radio-group>
                         <v-text-field   single-line label="First name" :rules="[validationRules.required]" v-model="questions[key][0]"></v-text-field>
                         <v-text-field  single-line label="Surname" :rules="[validationRules.required]" v-model="questions[key][1]"></v-text-field>
@@ -246,25 +249,25 @@
                             <v-divider></v-divider>
                         </v-card>
                     </v-dialog>
-                    <template v-if="questions[key]">
-                        <v-row class="addressDeets">
-                            <v-col cols="12" class="pb-0">
-                                <v-text-field type="text" v-model="questions[key].line_1" single-line label="Address line 1" />
-                            </v-col>
-                            <v-col cols="12" class="pb-0">
-                                <v-text-field type="text" v-model="questions[key].line_2" single-line label="Address line 2" />
-                            </v-col>
-                            <v-col cols="12" class="pb-0">
-                                <v-text-field type="text" v-model="questions[key].line_3" d single-line label="Address line 3" />
-                            </v-col>
-                            <v-col cols="6" class="pb-0">
-                                <v-text-field type="text" v-model="questions[key].post_town" d single-line label="Town/city" />
-                            </v-col>
-                            <v-col cols="6" class="pb-0">
-                                <v-text-field type="text" v-model="questions[key].postcode" single-line label="Postcode" />
-                            </v-col>
-                        </v-row>
-                    </template>
+<template v-if="questions[key]">
+    <v-row class="addressDeets">
+        <v-col cols="12" class="pb-0">
+            <v-text-field type="text" v-model="questions[key].line_1" single-line label="Address line 1" />
+        </v-col>
+        <v-col cols="12" class="pb-0">
+            <v-text-field type="text" v-model="questions[key].line_2" single-line label="Address line 2" />
+        </v-col>
+        <v-col cols="12" class="pb-0">
+            <v-text-field type="text" v-model="questions[key].line_3" d single-line label="Address line 3" />
+        </v-col>
+        <v-col cols="6" class="pb-0">
+            <v-text-field type="text" v-model="questions[key].post_town" d single-line label="Town/city" />
+        </v-col>
+        <v-col cols="6" class="pb-0">
+            <v-text-field type="text" v-model="questions[key].postcode" single-line label="Postcode" />
+        </v-col>
+    </v-row>
+</template>
                     <v-btn :disabled="!isValid" color="accent" x-large block class="btn-ntx" @click="stepInner++, toTop()">Next</v-btn>
                 </div>
             </v-form>
@@ -283,13 +286,13 @@
                  </v-alert>
                  <p class="mt-5">By clicking <i>"Get my Free Quote"</i> you agree to be contacted by telephone or email by Promis Life, an FCA Authorised Firm, and confirm that you have read and agreed to our <a href="/terms-and-conditions" target="_blank">Terms & Conditions</a> and <a href="/privacy" target="_blank">Privacy Policy</a></p>
                 <!-- <v-checkbox v-model="contactTicked">
-                    <template v-slot:label>
-                        <div> would like to use email, text and display notifications to let you know about <b>forever-protect-over-50.com</b> products and services. If you do not want to receive these, un-tick this box.
-                        <v-tooltip bottom>
-                            <template v-slot:activator="{ on }">
-                            <a target="_blank"  href="http://vuetifyjs.com" @click.stop v-on="on" >
-                            </a>
-                            </template>
+<template v-slot:label>
+    <div> would like to use email, text and display notifications to let you know about <b>forever-protect-over-50.com</b> products and services. If you do not want to receive these, un-tick this box.
+        <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+                                <a target="_blank"  href="http://vuetifyjs.com" @click.stop v-on="on" >
+                                </a>
+</template>
                         </v-tooltip>
                         </div>
                     </template>
@@ -300,6 +303,7 @@
         <v-btn :disabled="sending" v-if="stepInner !== 0" text @click="stepInner--, toTop()" block class="btnBck"><v-icon>mdi-menu-left-outline</v-icon>Back</v-btn>
     </div>
 </template>
+
 <script>
 import Vue from 'vue';
 export default {
@@ -352,7 +356,7 @@ export default {
         }
     },
     methods: {
-        defaultYear(){
+        defaultYear() {
             alert('year')
         },
         hasPartner() {
@@ -383,11 +387,11 @@ export default {
             newArr.splice(o, 0, [k, v]);
             this.questions = Object.fromEntries(newArr)
         },
-  
+
         requestAddress(qKey) {
-            this.$axios.$get('https://api.ideal-postcodes.co.uk/v1/postcodes/' + this.searchPostcode.replace(/\s/g,'') + '?api_key=ak_jr1wo74l0sgSldKnJeTPAEo5QpHxw')
+            this.$axios.$get('https://api.ideal-postcodes.co.uk/v1/postcodes/' + this.searchPostcode.replace(/\s/g, '') + '?api_key=ak_jr1wo74l0sgSldKnJeTPAEo5QpHxw')
                 .then((response) => {
-                   // console.log(response.result);
+                    // console.log(response.result);
                     this.popUp = true
                     this.addressList = response.result
                 })
@@ -395,65 +399,71 @@ export default {
                     console.log(error);
                 });
         },
-        toTop () {
-          this.$vuetify.goTo(0)
+        toTop() {
+            this.$vuetify.goTo(0)
         },
         phoneValidate() {
-         
-                this.telSearching = true
-                console.log('searching:'+ this.questions.phone);
-                this.$axios.$post('https://webservices.data-8.co.uk/TelephoneLineValidation/IsValidAdvanced.json?key=CX3N-IDXM-XEFB-73WE', {
-                        "number": this.questions.phone,
-                        "options": {
-                            "UseMobileValidation": true
-                        }
-                    })
-                    .then((response) => {
-                        console.log(response);
-                        response.Result == 'Invalid' || response.Result == 'TemporaryInvalid' ? this.phoneValidated = false : this.phoneValidated = true
-                        this.telSearching = false
+
+            this.telSearching = true
+            console.log('searching:' + this.questions.phone);
+            this.$axios.$post('https://webservices.data-8.co.uk/TelephoneLineValidation/IsValidAdvanced.json?key=CX3N-IDXM-XEFB-73WE', {
+                    "number": this.questions.phone,
+                    "options": {
+                        "UseMobileValidation": true
+                    }
+                })
+                .then((response) => {
+
+                    if (response.Result == 'Invalid' || response.Result == 'TemporaryInvalid') {
+                        this.isValid = false
+                        this.phoneValidated = false
+                        this.telError = 'This is not a valid UK number'
+                    } else {
+                        this.phoneValidated = true
                         this.stepInner++
                         this.isValid = true
-                    })
-                    .catch((error) => {
-                        this.isValid = false
-                        this.telError = 'This is not a valid UK number'
-                        setTimeout(() => {
-                            this.telError = '';
-                        }, 2000);
-                        console.log(error);
-                        this.telSearching = false
+                    }
+                    this.telSearching = false
+                })
+                .catch((error) => {
+                    this.isValid = false
+                    this.telError = 'This is not a valid UK number'
+                    setTimeout(() => {
+                        this.telError = '';
+                    }, 2000);
+                    console.log(error);
+                    this.telSearching = false
 
-                    });
-            
+                });
+
         },
         encodeDataToURL(data) {
             return Object.keys(data).map(value => `${value}=${encodeURIComponent(data[value])}`).join('&');
         },
-        postLead(){
+        postLead() {
             const data = {
-                    "campid": "FOREVERPROTECT",
-                    "campaign_id": '606',
-                    "supplier_id": '479',
-                    "email": this.questions.email,
-                    "title": this.questions.name[2],
-                    "firstname": this.questions.name[0],
-                    "lastname": this.questions.name[1],
-                    "building": this.questions.address.building_number,
-                    "street1": this.questions.address.line_1,
-                    "street2": this.questions.address.line_2,
-                    "street3": this.questions.address.line_3,
-                    "towncity": this.questions.address.post_town,
-                    "county": this.questions.address.county,
-                    "postcode": this.questions.address.postcode,
-                    "phone1": this.questions.phone,
-                    "dob" : this.questions.dob.join('/'),
-                    "consumer_ip_address" : this.userIP
+                "campid": "FOREVERPROTECT",
+                "campaign_id": '606',
+                "supplier_id": '479',
+                "email": this.questions.email,
+                "title": this.questions.name[2],
+                "firstname": this.questions.name[0],
+                "lastname": this.questions.name[1],
+                "building": this.questions.address.building_number,
+                "street1": this.questions.address.line_1,
+                "street2": this.questions.address.line_2,
+                "street3": this.questions.address.line_3,
+                "towncity": this.questions.address.post_town,
+                "county": this.questions.address.county,
+                "postcode": this.questions.address.postcode,
+                "phone1": this.questions.phone,
+                "dob": this.questions.dob.join('/'),
+                "consumer_ip_address": this.userIP
             }
             const URL = "https://forever-protect-over-50.com/"
             console.log(this.encodeDataToURL(data).toString().replace(/[^\x20-\x7E]/g, ''))
-            this.$axios.$post(URL+"?"+this.encodeDataToURL(data).toString().replace(/[^\x20-\x7E]/g, '')
-            
+            this.$axios.$post(URL + "?" + this.encodeDataToURL(data).toString().replace(/[^\x20-\x7E]/g, '')
+
             ).then((response) => {
                 console.log(response.code);
                 window.location.replace('/success')
@@ -464,24 +474,22 @@ export default {
         }
     },
     computed: {
-        isLocalHost(){
+        isLocalHost() {
             //return location.hostname === "localhost" ? true : false
         },
-        prePopDob(){
+        prePopDob() {
             this.questions.dob = [] ? this.questions.dob = [1, 1, 1969] : null;
         },
-        ageCheck(){
+        ageCheck() {
             var today_date = new Date();
             var today_year = today_date.getFullYear();
             var today_month = today_date.getMonth();
             var today_day = today_date.getDate();
             var age = today_year - this.questions.dob[2];
-            if ( today_month < (this.questions.dob[1] - 1))
-            {
+            if (today_month < (this.questions.dob[1] - 1)) {
                 age--;
             }
-            if (((this.questions.dob[1] - 1) == today_month) && (today_day < this.questions.dob[0]))
-            {
+            if (((this.questions.dob[1] - 1) == today_month) && (today_day < this.questions.dob[0])) {
                 age--;
             }
             return age >= 50 && age <= 75 ? true : false;
@@ -489,9 +497,9 @@ export default {
         percentageDone() {
             var countAllQuestions = Object.keys(this.questions).length;
             var countAllValues = [];
-              Object.values(this.questions).filter((y) => y == "" || y == 0 || y == [] || y == null)
+            Object.values(this.questions).filter((y) => y == "" || y == 0 || y == [] || y == null)
                 .forEach((q) => {
-                  countAllValues.push(q);
+                    countAllValues.push(q);
                 });
             var x = countAllValues.length / countAllQuestions;
             var percenage = x * 100;
@@ -534,81 +542,90 @@ export default {
             }
         }
     },
-    mounted(){
-    // get user IP
-    fetch('https://api.ipify.org?format=json')
-        .then(x => x.json()).then(({ ip }) => {
-            this.userIP = ip;
-        });
+    mounted() {
+        // get user IP
+        fetch('https://api.ipify.org?format=json')
+            .then(x => x.json()).then(({ ip }) => {
+                this.userIP = ip;
+            });
     }
 }
 </script>
+
 <style scoped lang="scss">
 .btn-ntx {
     color: #fff;
     font-family: $heading-font-family !important;
 }
-.btnBck .v-icon{
-  color: orange !important;
+
+.btnBck .v-icon {
+    color: orange !important;
 }
-.formSectionInner .v-btn{
-  font-family: $heading-font-family !important;
-  font-size: 1em;
-  font-weight: bolder;
+
+.formSectionInner .v-btn {
+    font-family: $heading-font-family !important;
+    font-size: 1em;
+    font-weight: bolder;
 }
+
 .v-btn .v-icon {
     margin-right: 10px;
-    color: #fff ;
+    color: #fff;
 }
+
 .theForm {
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 1px 7px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .37);
     max-width: 600px;
-
-    @media screen and (min-width:400px) and (max-width:600px){
+    @media screen and (min-width: 400px) and (max-width:600px) {
         margin: -70px auto 0 auto;
         width: 95%;
     }
-    @media screen and (min-width:600px) and (max-width:960px){
+    @media screen and (min-width:600px) and (max-width:960px) {
         margin: -100px auto 0 auto;
-
     }
-
     @media only screen and (min-width: 960px) {
-         margin: -150px auto 0 auto;
-  }
+        margin: -150px auto 0 auto;
+    }
 }
+
 .fade-enter-active,
 .v-stepper__content {
     transition: all .3s ease-in-out !important;
 }
+
 .v-stepper {
     box-shadow: none !important;
     box-shadow: 0 !important;
 }
+
 .fade-enter-active,
 .fade-leave-active,
 .v-stepper__content {
     opacity: 1;
     transform: translateY(0)
 }
+
 .fade-enter {
     transition-delay: 3s
 }
+
 .fade-enter,
 .fade-leave-to {
     opacity: 0;
     transform: translateY(10px)
 }
+
 .formSectionInner {
-   @media only screen and (max-width: 600px) {
-       padding: 2em;
+    @media only screen and (max-width: 600px) {
+        padding: 2em;
     }
     @media only screen and (min-width: 600px) {
         padding: 1em;
     }
 }
+
 .addressLookup {
     background-color: #fff;
     padding: 0.5rem 1rem;
@@ -629,24 +646,29 @@ export default {
     padding: 13px 10px;
     box-shadow: 0 2px 3px #00000014;
 }
+
 .addressDeets {
     .v-text-field__details {
         display: none !important;
     }
 }
+
 .addressField-0 {
     width: 40%;
     display: inline-block;
 }
+
 .addressField-1 {
     width: 100%;
     display: inline-block;
 }
+
 .addressField-2 {
     width: 60%;
     display: inline-block;
     padding-right: 12px;
 }
+
 .addressField-3 {
     width: 40%;
     display: inline-block;
