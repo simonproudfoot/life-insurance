@@ -225,8 +225,8 @@
                         <h2 class="mb-5 text-center">Contact number</h2>
                         <v-text-field :hint="telSearching ? 'Verifying telephone number' : null"  ref="telephoneField" type="tel"  pattern="[0-9]*" single-line label="Telephone number" v-model="questions[key]" ></v-text-field>
                         <p v-if="phoneValidated == false">Invalid UK telephone number</p>
-                        <v-btn height="80" :loading="telSearching || sending" :disabled="questions[key] == null || !telLength" color="accent" class="text-white btn-ntx mt-12" x-large block @click="phoneValidate(), toTop()">Get my Free Quote <v-icon>mdi-menu-right-outline</v-icon></v-btn>
-                        <p class="mt-5"><small>By clicking <i>"Get my Free Quote"</i> you agree to be contacted by telephone or email by Promis Life, an FCA Authorised Firm, and confirm that you have read and agreed to our <a href="/terms-and-conditions.php" target="_blank">Terms & Conditions</a> and <a href="/privacy" target="_blank">Privacy Policy</a></small></p>
+                        <v-btn height="80" :loading="telSearching || sending" color="accent" class="text-white btn-ntx mt-5" x-large block @click="phoneValidate(), toTop()">Get my Free Quote <v-icon>mdi-menu-right-outline</v-icon></v-btn>
+                        <p class="mt-3"><small style="font-size:10px; line-height: 8px">By clicking <i>"Get my Free Quote"</i> you agree to be contacted by telephone or email by Promis Life, an FCA Authorised Firm, and confirm that you have read and agreed to our <a href="/terms-and-conditions.php" target="_blank">Terms & Conditions</a> and <a href="/privacy" target="_blank">Privacy Policy</a></small></p>
                     </div>
                 </v-form>
             </transition>
@@ -283,23 +283,11 @@
                 </div>
             </v-form>
             </transition>
-            <transition name="fade">
-            <div v-if="key == 'success' && stepInner == index" class="formSectionInner formSectionInner--narrow">
-                <h1 class="text-center">Almost there, <span style="text-transform: capitalize">{{questions.name[0]}}</span></h1>
-                <h2 class="mb-5">Please submit to get your free quote.</h2>
-                <v-btn color="accent" class="text-white btn-ntx submitButton" height="80" x-large block  @click="postLead" :disabled="sending" :loading="sending" >Get my Free Quote
-                  <v-icon lass="mb-0 text-white" large>mdi-chevron-double-right</v-icon>
-                </v-btn>
-                <div v-if="sending">Please wait whilst we submit your details</div>
-                 <v-alert class="mt-5" v-if="submitError" type="error">
-                    {{submitError}}
-                 </v-alert>
-                 <p class="mt-5">By clicking <i>"Get my Free Quote"</i> you agree to be contacted by telephone or email by Promis Life, an FCA Authorised Firm, and confirm that you have read and agreed to our <a href="/terms-and-conditions.php" target="_blank">Terms & Conditions</a> and <a href="/privacy" target="_blank">Privacy Policy</a></p>
-            </div>
-        </transition>
+         
+           
+
         </div>
         <v-btn :disabled="sending" v-if="stepInner !== 0" text @click="stepInner--, toTop()" block class="btnBck"><v-icon>mdi-menu-left-outline</v-icon>Back</v-btn>
-        
     </div>
 </template>
 <script>
@@ -374,6 +362,12 @@ export default {
             Vue.delete(this.questions, q);
         },
         addItem(s, k, v, o) {
+            function toObject(pairs) {
+                return Array.from(pairs).reduce(
+                    (acc, [key, value]) => Object.assign(acc, { [key]: value }),
+                    {},
+                );
+            }
             //section - key - value - order/index
             // make a new array
             const newArr = new Array();
@@ -383,7 +377,7 @@ export default {
             });
             // add new items to array
             newArr.splice(o, 0, [k, v]);
-            this.questions = Object.fromEntries(newArr)
+            this.questions = toObject(newArr)
         },
         requestAddress(qKey) {
             this.$axios.$get('https://api.ideal-postcodes.co.uk/v1/postcodes/' + this.searchPostcode.replace(/\s/g, '') + '?api_key=ak_jr1wo74l0sgSldKnJeTPAEo5QpHxw')
@@ -547,6 +541,9 @@ export default {
 }
 </script>
 <style scoped lang="scss">
+.darkBlue{
+    color: #fff !important;
+}
 .btn-ntx {
     color: #fff;
     font-family: $heading-font-family !important;
