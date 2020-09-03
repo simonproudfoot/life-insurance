@@ -103,6 +103,7 @@ export default {
     theme: {
       themes: {
         light: {
+          darkBlue: '#0b3868',
           primary: colors.blue,
           accent: colors.orange,
           secondary: '#de8c01',
