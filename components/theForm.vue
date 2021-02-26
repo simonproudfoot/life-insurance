@@ -380,7 +380,7 @@ export default {
             this.questions = toObject(newArr)
         },
         requestAddress(qKey) {
-            this.$axios.$get('https://api.ideal-postcodes.co.uk/v1/postcodes/' + this.searchPostcode.replace(/\s/g, '') + '?api_key=ak_jr1wo74l0sgSldKnJeTPAEo5QpHxw')
+            this.$axios.$get('https://api.ideal-postcodes.co.uk/v1/postcodes/' + this.searchPostcode.replace(/\s/g, '') + '?api_key=###########')
                 .then((response) => {
                     // console.log(response.result);
                     this.popUp = true
@@ -395,7 +395,7 @@ export default {
         },
         phoneValidate() {
             this.telSearching = true
-            this.$axios.$post('https://webservices.data-8.co.uk/TelephoneLineValidation/IsValidAdvanced.json?key=CX3N-IDXM-XEFB-73WE', {
+            this.$axios.$post('https://webservices.data-8.co.uk/TelephoneLineValidation/IsValidAdvanced.json?key=###########', {
                     "number": this.questions.phone,
                     "options": {
                         "UseMobileValidation": true
